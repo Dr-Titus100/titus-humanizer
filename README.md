@@ -42,7 +42,7 @@ The skill cleans the text, checks it at three levels, fixes what it finds and th
 
 1. Hidden-character cleanup. Text pasted from AI tools, PDFs and web pages often carries characters you can't see: zero-width spaces, byte-order marks, text-direction controls, odd spaces and look-alike letters such as a Cyrillic "а" inside an English word. They break search, spell-check and word counts. The skill removes them and leaves emoji, other alphabets and code alone.
 2. Seven hard rules for patterns that never appear in the output. They cover em dashes and semicolons, "it's not X, it's Y" framing, passive voice that hides who acted, command-style slide titles, slogans, hedges such as "illustrative" on real numbers, and chatbot phrases such as "I hope this helps".
-3. Judgment calls on wording, sorted into five categories: awkward, flowery, vague, unnecessary and illogical. Each category comes with a test, such as "would you say this out loud to a colleague?", and graded examples of text that passes and text that fails.
+3. Judgment calls on wording, sorted into five categories: awkward, flowery, vague, unnecessary and illogical. Each category comes with a test, such as "would you say this out loud to a colleague?", and examples of wording that passes and wording that fails.
 4. Story-level patterns for narrative and reflective writing. AI-written stories tend to state their moral, show fear through a stack of body sensations, make the weather match the mood and tie up every thread. The skill cuts these, keeps the writer's real names and odd details, and suggests bigger structural changes without making them unless you ask.
 5. An AI-pattern score from 0 to 1, run on the original and on the rewrite. Most of the score comes from how densely the text uses the patterns above. Sentence rhythm, repeated sentence openings and word variety make up the rest. Scores of 0.60 and up count as high, and the skill takes another pass at the flagged spots when the rewrite still scores high.
 
@@ -58,7 +58,7 @@ Once it's installed, ask in plain words. The skill loads when the request fits.
 
 | You ask | You get |
 | --- | --- |
-| "Humanize this:" followed by your text | The rewritten text and a four-line report: the scores before and after, the patterns left and the hidden characters removed |
+| "Humanize this:" followed by your text | The rewritten text and a short report: the scores before and after, the patterns left and the hidden characters removed |
 | "Rewrite this and tell me what you changed" | The rewrite, then a short list of what changed and why |
 | "Does this sound like AI?" or "Review this" | The score, then a list of problems, each quoted with its location, category and a plainer version |
 | "Here's my revised draft" after a review | Old and new scores, plus which problems the revision fixed, which remain and which are new |
@@ -154,7 +154,7 @@ If you change `scripts/titus_tools.py`, run the tests first:
 python3 -m unittest discover -s tests
 ```
 
-When a change moves a score or a pattern count, the tests print the old and new output side by side, and `python3 tests/update_expected.py` saves the new output for your pull request. A bug report that names a fixture and a line, such as `tests/fixtures/resume/ai_resume.txt` line 15, is the quickest to fix. [tests/README.md](tests/README.md) explains the examples and how to add one.
+When a change moves a score or a pattern count, the tests print a diff of the old and new output, and `python3 tests/update_expected.py` saves the new output for your pull request. A bug report that names a fixture and a line, such as `tests/fixtures/resume/ai_resume.txt` line 15, is the quickest to fix. [tests/README.md](tests/README.md) explains the examples and how to add one.
 
 ## License
 

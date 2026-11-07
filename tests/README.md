@@ -23,7 +23,7 @@ python3 -m unittest discover -s tests -v
 `fixtures/resume/` and `fixtures/prose/` hold short documents written for these tests. The people and companies in them are fictional.
 
 - A file ending in `_rewrite.txt` is a hand-edited rewrite of the file with the same name. Each pair has a stored before-and-after report.
-- A file starting with `human_` is plain writing that should pass. `human_resume.txt` uses date ranges such as "Fall 2018 – Spring 2020" and bullets at the start of lines, which the punctuation rules allow. `human_pasted_feedback.txt` contains zero-width spaces, a non-breaking space and a Cyrillic "а" inside an English word, so it tests the cleanup on a real document.
+- A file starting with `human_` is plain writing that should pass. `human_resume.txt` uses date ranges such as "Fall 2018 – Spring 2020" and bullets at the start of lines, which the punctuation rules allow. `human_pasted_feedback.txt` contains zero-width spaces, a non-breaking space and a Cyrillic "а" inside an English word, so it tests the cleanup on a whole document.
 - The other files are drafts full of AI-writing patterns.
 
 For each example, `expected/` stores what the script prints for it, followed by every pattern it found and the line it found it on:
