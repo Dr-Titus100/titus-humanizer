@@ -24,6 +24,9 @@ jobs:
           printf 'It is not just a tool \xe2\x80\x94 it is a game-changer that leverages robust synergy to unlock value for every team in the organization today.\n' > sample.txt
           python3 skills/titus-humanizer/scripts/titus_tools.py score sample.txt
 
+      - name: Run tests
+        run: python3 -m unittest discover -s tests
+
       - name: Build zip
         run: |
           cd skills

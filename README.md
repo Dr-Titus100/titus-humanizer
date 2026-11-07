@@ -7,10 +7,10 @@ It works on emails, reports, slide decks, resumes, papers, cover letters, person
 ## What it changes
 
 **Before:**
-> In today's fast-paced digital landscape, our new onboarding checklist isn't just a tracker — it's a gateway to a more seamless experience, fostering alignment and driving meaningful impact.
+> In today's fast-paced academic landscape, our new lab notebook template isn't just a form — it's a gateway to more reproducible science, fostering transparency and driving meaningful impact.
 
 **After:**
-> The new onboarding checklist shows new hires which setup steps they have finished.
+> The new lab notebook template gives every experiment the same structure, which makes results easier to reproduce.
 
 **Before (email):**
 > I hope this message finds you well! I wanted to reach out to touch base regarding the proposal, which was reviewed by our team last week. It's not just a budget request — it's a roadmap for sustainable growth. Please let me know if you have any questions!
@@ -25,7 +25,7 @@ AI-pattern score: 0.56 (medium) before, not scored (27 words, needs at least 30)
 Patterns before: em dash x1, reject-then-assert x1, passive voice (heuristic) x1, chatbot residue x1
 Patterns left after: none
 Hidden characters removed: none
-Note: short text, so the score is dampened and less reliable.
+Note: the text is short, so the script dampened the score and it is less reliable.
 ```
 
 **Before (story):**
@@ -61,7 +61,7 @@ Once it's installed, ask in plain words. The skill loads when the request fits.
 | "Humanize this:" followed by your text | The rewritten text and a four-line report: the scores before and after, the patterns left and the hidden characters removed |
 | "Rewrite this and tell me what you changed" | The rewrite, then a short list of what changed and why |
 | "Does this sound like AI?" or "Review this" | The score, then a list of problems, each quoted with its location, category and a plainer version |
-| "Here's my revised draft" after a review | Old and new scores, plus which problems are fixed, which remain and which are new |
+| "Here's my revised draft" after a review | Old and new scores, plus which problems the revision fixed, which remain and which are new |
 | "Do a deeper rewrite of this story" | A rewrite that may also reorder or trim scenes, using only material already in the draft |
 
 ## Installation
@@ -127,24 +127,34 @@ titus-humanizer/
 │   └── scripts/titus_tools.py        hidden-character cleanup and the AI-pattern score
 ├── .claude-plugin/                   Claude Code plugin and marketplace files
 ├── chatgpt/gpt-instructions.md       short instructions for a Custom GPT
+├── tests/                            checks for the script, with resume and prose examples
+├── .github/workflows/tests.yml       runs the tests on every push and pull request
 ├── .github/workflows/release.yml     builds titus-humanizer.zip for each release
 ├── CHANGELOG.md
 └── LICENSE
 ```
 
-The skill folder holds everything the skill needs. The plugin files point to it and the release workflow zips it, so a change to the rules or the script happens in that folder only. The script uses only the Python standard library.
+The skill folder holds everything the skill needs. The plugin files point to it and the release workflow zips it, so a change to the rules or the script happens in that folder only. The script uses only the Python standard library. The release zip leaves out `tests/`.
 
 ## Sources
 
 The rules draw on three sources.
 
-- A set of AI-writing grading guidelines: writing quality instructions, a five-category taxonomy of weak wording, a list of AI-isms and hundreds of graded calibration examples.
+- Professional writing standards for editing AI-generated text: a five-category taxonomy of weak wording (awkward, flowery, vague, unnecessary and illogical) and a set of AI-isms that always count as problems. All of the skill's examples are original.
 - Wikipedia's [Signs of AI writing](https://en.wikipedia.org/wiki/Wikipedia:Signs_of_AI_writing), which WikiProject AI Cleanup maintains. The skill paraphrases its patterns and copies no text from it.
 - Russell, Rajendhran, Pham, Iyyer and Wieting, [StoryScope: Investigating idiosyncrasies in AI fiction](https://arxiv.org/abs/2604.03136) (COLM 2026). The study compared 10,272 human-written stories with stories that five models wrote from the same prompts, and it supplies the story-level patterns and the percentages quoted in Part 6 of the skill.
 
 ## Contributing
 
 Issues and pull requests are welcome. A useful report includes a before-and-after pair: a draft, the skill's output, and what you expected instead. A new rule fits best when it comes with an example of the pattern and its plainer version.
+
+If you change `scripts/titus_tools.py`, run the tests first:
+
+```
+python3 -m unittest discover -s tests
+```
+
+When a change moves a score or a pattern count, the tests print the old and new output side by side, and `python3 tests/update_expected.py` saves the new output for your pull request. A bug report that names a fixture and a line, such as `tests/fixtures/resume/ai_resume.txt` line 15, is the quickest to fix. [tests/README.md](tests/README.md) explains the examples and how to add one.
 
 ## License
 

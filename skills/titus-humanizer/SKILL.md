@@ -5,7 +5,7 @@ description: "Rewrites text so it reads like a careful, plain-spoken person wrot
 
 # titus-humanizer
 
-This skill makes writing read like a careful, plain-spoken person wrote it. The rules come from a set of AI-writing grading guidelines (writing quality instructions, a five-category slop taxonomy, a list of AI-isms, and hundreds of graded calibration examples), Wikipedia's "Signs of AI writing" page, and the StoryScope study of AI fiction (Russell et al., COLM 2026), which found that AI writing shows in what it chooses to say and how it shapes a story, as well as in its word choice. The guiding question from those guidelines applies to every sentence: **could this be rewritten significantly better?**
+This skill makes writing read like a careful, plain-spoken person wrote it. The rules come from professional writing standards for editing AI-generated text (a five-category taxonomy of AI-slop wording and a set of AI-isms that are always flagged), Wikipedia's "Signs of AI writing" page, and the StoryScope study of AI fiction (Russell et al., COLM 2026), which found that AI writing shows in what it chooses to say and how it shapes a story, as well as in its word choice. One question applies to every sentence: **would a plainer, more specific version say the same thing better?**
 
 ## Default behavior
 
@@ -45,35 +45,35 @@ Text copied from AI tools, PDFs, web pages and word processors often carries cha
 - Anything inside code, commands, URLs, file paths and identifiers.
 - Required disclosures and labels, which are visible text and never part of this cleanup.
 
-**How to run it.** When a code tool is available (a shell or Python), use the `clean` command of `scripts/titus_tools.py` in this skill's folder. Run it on the original text and again on the finished rewrite. The Part 7 report lists what it removed. When no code tool is available, retype the text in the rewrite and don't copy characters across, and say in the report that hidden characters couldn't be checked by script this time. For Word files or PDFs, extract the text first and clean the extracted text. For a .docx the user wants back as a .docx, clean the text inside it and keep the formatting.
+**How to run it.** When a code tool is available (a shell or Python), use the `clean` command of `scripts/titus_tools.py` in this skill's folder. Run it on the original text and again on the finished rewrite. The Part 7 report lists what it removed. When no code tool is available, retype the text in the rewrite and don't copy characters across, and say in the report that the script couldn't check hidden characters this time. For Word files or PDFs, extract the text first and clean the extracted text. For a .docx the user wants back as a .docx, clean the text inside it and keep the formatting.
 
 **Be honest about what this does.** It removes invisible and look-alike characters. That's all. It doesn't remove statistical watermarks from AI models, it doesn't strip metadata from files, and it can't prove that a person wrote the text. Never describe the result as "undetectable" or "proven human".
 
 ## Part 1. Hard rules (never appear in the output)
 
-The grading guidelines mark these as slop every time they appear, whatever the context. Don't produce them, and remove them from the user's text.
+These patterns count as AI-isms every time they appear, whatever the context. Don't produce them, and remove them from the user's text.
 
 **1. Punctuation.** No em dashes (—). No hyphens or en dashes used as dashes to set off an aside or a break ("X - and Y - Z"). No semicolons. No inline dot separators (• · ●) between items on one line. No vertical bars ( | ) as separators. No arrows (→, ->, >, ⇒) in prose, titles or labels.
 - Still fine: hyphens inside compound words ("well-written"), commas, periods, question marks, parentheses.
 - **Ranges are fine,** with or without spaces around the dash: "pages 5–10", "2019–2021", "Jul 2020 – Jun 2021", "May 2019 - Aug 2019", "2018 – Present", "Fall 2018 – Spring 2020", "Q1 – Q3". A dash only counts as a break when it sets off an aside or joins two clauses, as in "closed in 2020 – and nobody noticed".
 - **Bullets at the start of a line are fine** (•, ●, ▪, - or *). They're list markers, as on a resume. The inline-dot rule covers only symbols used between items on the same line, as in "Python • SQL • R". Write those as a comma list ("Python, SQL and R").
 - Fix by splitting into two sentences, using a comma with "and", "but", "so" or "because", or using parentheses for a true aside.
-- Use colons sparingly. One colon that introduces a real list or a definition is fine. Avoid colon-driven rhythm: "Label: fragment" lines ("Universities: reinforce guidance. Students: reduce activity."), lead-ins such as "Key idea:", "Bottom line:" or "Why it matters:", and colon reveals ("The answer: simplicity").
+- Use colons sparingly. One colon that introduces a real list or a definition is fine. Avoid colon-driven rhythm: "Label: fragment" lines ("Interns: shadow a mentor. Managers: sign off weekly. Everyone: log hours by Friday."), lead-ins such as "Key idea:", "Bottom line:" or "Why it matters:", and colon reveals ("The answer: simplicity").
 
-**2. Reject-then-assert framing.** Any sentence that rejects one thing in order to assert another, in either order, including across two sentences:
-- "It's not X, it's Y", "Do Y, not X", "not just X, but Y", "not only X but also Y", "no X, no Y, just Z", "Y rather than X", "This isn't just a calendar - it's a gateway...", "Data access is not a background detail. It's the heart of the user experience."
-- Fix: state the positive claim directly ("The checklist shows which release requirements are complete"). When a real correction is the point, state both facts plainly as two statements instead of staging a contrast.
+**2. Reject-then-assert framing.** Any sentence that rejects one thing to assert another, in either order, including across two sentences:
+- "It's not X, it's Y", "Do Y, not X", "not just X, but Y", "not only X but also Y", "no X, no Y, just Z", "Y rather than X", "This app isn't just a budget tracker - it's a path to financial freedom", "Customer support is not a cost center. It's the heart of the brand."
+- Fix: state the positive claim directly ("The app sorts spending by category and flags bills that are due soon"). When a real correction is the point, state both facts plainly as two statements instead of staging a contrast.
 
-**3. Passive voice.** Name who did the action. "The proposal was approved by the team" becomes "The team approved the proposal." "The identified certificate was already marked as replaced" becomes "The system had already marked the certificate as replaced." Watch for it in technical and methods writing, where it hides easily (in research writing, "we" usually works). Sentences that describe a state are fine ("The office is closed", "The data are noisy"). If the actor is truly unknown, choose a subject the context supports, never an invented one.
+**3. Passive voice.** Name who did the action. "The budget was approved by the board" becomes "The board approved the budget." "The duplicate records were already flagged as invalid" becomes "The import script had already flagged the duplicate records as invalid." Watch for it in technical and methods writing, where it hides easily (in research writing, "we" usually works). Sentences that describe a state are fine ("The office is closed", "The data are noisy"). If the actor is truly unknown, choose a subject the context supports, never an invented one.
 
-**4. Imperative titles.** Slide, page and document titles describe the content or state the finding. They don't give commands. "Define the integration perimeter before designing the workplan" becomes "Integration scope and workplan order". Labels follow the same rule: "SPEND CAREFULLY" becomes "More careful spending". This applies only to titles. Instructions in a how-to body, or an email asking someone to do something, can use commands normally.
+**4. Imperative titles.** Slide, page and document titles describe the content or state the finding. They don't give commands. "Fix the intake backlog before hiring more staff" becomes "Intake backlog and staffing needs". Labels follow the same rule: "CUT COSTS NOW" becomes "Planned cost reductions". This applies only to titles. Instructions in a how-to body, or an email asking someone to do something, can use commands normally.
 
 **5. Slogan-like phrasing.** Taglines and buzzword formulas that sound finished but leave nothing a reader could check:
-- Rhythm fragments: "One team. One vision. Limitless possibilities.", "Pipeline is flat. Spend isn't.", "Win the close. Keep the evidence.", "Always on, always learning", "Distinct strengths. One integrated Ford."
-- Buzzword formulas: "turns customer activity into a direct revenue expansion path", "provided scale, speed and certainty by anchoring the refinancing", "converts invested capital into repeatable growth", "From paper-bound practicals to a shared digital workspace."
-- Fix: say what actually happens, with the mechanism or number.
+- Rhythm fragments: "One lab. One mission. Endless discovery.", "Costs are up. Output isn't.", "Plan early. Finish strong.", "Always curious, always growing", "Many teams. One campus."
+- Buzzword formulas: "turns every patient visit into a long-term loyalty engine", "delivered speed, scale and confidence by unifying the data stack", "converts research spending into compounding impact", "From scattered spreadsheets to a single source of truth."
+- Fix: say what happens, with the mechanism or number.
 
-**6. Illustrative hedging.** Never describe a number, chart or visual as "illustrative", "for reference only", "for discussion only", "directional", "sample", "placeholder" or "approximate" because its values aren't supported. Use the real figure with its source and unit, or describe plainly what the data is ("Estimates from the 2023 company survey").
+**6. Illustrative hedging.** Never describe a number, chart or visual as "illustrative", "for reference only", "for discussion only", "directional", "sample", "placeholder" or "approximate" because its values aren't supported. Use the real figure with its source and unit, or describe plainly what the data is ("Figures from the 2024 department survey").
 
 **7. Chatbot residue.** No "Certainly!", "Great question", "I hope this helps", "Let me know if you'd like...", "Here is a...", "Below is a polished rewrite", "As an AI", knowledge-cutoff notes, or unfilled template placeholders that the writer didn't put there.
 
@@ -82,40 +82,40 @@ The grading guidelines mark these as slop every time they appear, whatever the c
 Each category applies at three levels: single **words**, **phrases**, and standalone **labels** (headings, column heads, chart titles, tags). A one-word label gets the same scrutiny as a full sentence. One phrase can fit several categories.
 
 **A. Awkward or unnatural wording.** Test: would you say this out loud to a colleague? The words are understandable but assembled mechanically.
-- "Shopping has become more deliberate and value-led." Say "focused on value".
-- "Contributions waned over the period." Say "decreased".
-- "Cash moved lower", "Inventories moved higher", "lift the cost base", "Borrowings ended the quarter at a lower level". Say "decreased", "increased", "raise costs", "Borrowings decreased during the quarter".
-- Nouns forced into adjectives: "POST-COVID CONSUMER" becomes "Consumers after COVID-19".
-- Syntax inversion: "Only by working closely with the business can treasurers understand their risks" becomes "Treasurers understand their risks only when they work closely with the business."
-- Odd metaphors: "consumers are thinking harder before they buy", "shared organizational muscle", "Data Center is doing the heavy lifting" (say "Most revenue growth comes from data centers").
-- Odd renderings: "Q two twenty twenty-five" becomes "Q2 2025".
+- "Campus dining has become more intentional and value-forward." Say "more focused on price".
+- "Enrollment softened over the period." Say "decreased".
+- "Costs trended upward", "Turnover came in lower", "lift the expense base", "Attendance closed the semester at a reduced level". Say "rose", "fell", "raise expenses", "Attendance fell during the semester".
+- Nouns forced into adjectives: "REMOTE-FIRST LEARNER" becomes "Students who study mostly online".
+- Syntax inversion: "Only through regular calibration can the sensor produce reliable readings" becomes "The sensor gives reliable readings only when it's calibrated regularly."
+- Odd metaphors: "shoppers are voting with their thumbs", "the survey is doing the heavy lifting here" (say "Most of the evidence comes from the survey").
+- Odd renderings: "fiscal year twenty twenty-four" becomes "FY2024".
 
 **B. Excessive or flowery wording.** Test: say it in the plainest words you have. If nothing is lost, the original was decoration.
-- "holistically cultivate a multifaceted ecosystem of synergistic capabilities that meaningfully facilitates the realization of enhanced outcomes" becomes "build a set of capabilities that will improve its outcomes".
-- "Catalyzing Transformative Excellence" becomes "Performance Improvement". "A structurally lower commute base" becomes "A permanent drop in commuting". "next-generation flagship smartphones" becomes "flagship smartphones".
-- Stacked jargon: correct terms crammed together until the meaning blurs ("pressurized metered-dose inhaler simulation capabilities", "scalable spans and layers").
-- Consultant verbs standing in for a plain one: "translate priorities into coordinated execution", "operationalize", "enable strategy", "champion ideas and accelerate them toward scale".
+- "strategically orchestrate a dynamic constellation of interdisciplinary competencies that collectively empowers the attainment of elevated results" becomes "bring together people with different skills to get better results".
+- "Igniting Collaborative Brilliance" becomes "Team Projects". "A fundamentally recalibrated attendance baseline" becomes "A lasting drop in attendance". "high-end premium laptops" becomes "premium laptops".
+- Stacked jargon: correct terms crammed together until the meaning blurs ("cloud-native containerized microservice orchestration capabilities", "agile cross-functional delivery pods").
+- Consultant verbs standing in for a plain one: "convert insights into aligned action", "activate the roadmap", "socialize the findings", "drive promising ideas toward scale".
 
 **C. Vague or empty wording.** Test: ask which product, which metric, which outcome. If the text can't answer, the words are empty. Vague lines could sit unchanged in a completely different document.
-- "FY24 revenue $2.68B (+26%), with broad-based usage across products" becomes "with usage increasing across products" (or name the products).
-- "sustain the core" becomes "sustain the core business". "Strategic Value Drivers" becomes "Revenue Metrics". "Progressive promotion improves trust" becomes "Customer rewards programs improve trust".
-- Incomplete phrasing: "Municipal contracts support visibility" (visibility of what?).
-- Missing causal link: "Price and availability lead transportation adoption" becomes "Price and availability are the main drivers of transport adoption".
-- Paired nouns that don't belong together ("innovation and service", "revenue and public trust"), so the reader can't tell which one is meant.
+- "Revenue grew 12% in 2024, with broad-based gains across regions" becomes "with gains in every region" (or name the regions, if the source does).
+- "protect the core" becomes "protect the main product line", when that's what the core means. "Key Success Enablers" becomes "Hiring and Training Results", when that's what the section covers. "Smart engagement improves retention" becomes "Weekly check-in emails improve retention", when that's the program.
+- Incomplete phrasing: "Shared dashboards improve visibility" (visibility of what, and for whom?).
+- Missing causal link: "Cost and convenience lead bike-share use" becomes "Cost and convenience are the main reasons people use bike-share".
+- Paired nouns that don't belong together ("speed and community", "safety and growth"), so the reader can't tell which one is meant.
 
 **D. Unnecessary wording.** Test: delete it and reread. If the meaning survives, it did no work.
-- Redundant modifiers: "practical consumer needs", "defined non-GAAP adjustments", "immediate demand shock", "cumulative free cash flow across FY20–FY22", "lock in standards or constrain change".
-- Empty tails: "to reveal what matters most", "that creates sustainable value", "ensuring a seamless user experience".
-- Decorative labels: "A NEW ERA", "MOMENTUM AHEAD", "UNLOCKING POTENTIAL", and unrequested tags such as "CONFIDENTIAL AND PROPRIETARY" or "Internal planning discussion".
+- Redundant modifiers: "past history", "advance planning", "sudden unexpected spike", "total combined enrollment across all campuses", "delay or postpone the decision".
+- Empty tails: "to capture the full picture", "that drives lasting value", "ensuring a frictionless experience".
+- Decorative labels: "THE NEXT CHAPTER", "FORWARD MOMENTUM", "UNLEASHING GROWTH", and unrequested tags such as "STRICTLY CONFIDENTIAL" or "Draft for internal alignment".
 - Subtitles or headers that repeat the title.
 - Framing lead-ins: "Why it matters:", "Bottom line:", "Key takeaway:", "It's worth noting that", "It is important to remember that".
-- Unrequested disclaimers: "This summary does not replace a full clearance search."
+- Unrequested disclaimers: "This overview is not a substitute for a full legal review."
 
 **E. Illogical wording.** Test: restate it as a plain fact. If you have to choose between two readings, it fails.
-- "Test, learn, and scale the most promising ideas" (you can't "learn" an idea) becomes "Develop, test, and scale the most promising ideas".
-- "79% Transit use back to pre-pandemic" becomes "Transit use has recovered to 79% of its pre-pandemic level".
-- "Revenue Growth Decline Expansion" becomes "Revenue Decline".
-- "Incubate adjacent offerings that can expand the core" becomes "Develop related products that expand the core business".
+- "Hire, learn and promote the strongest candidates" (you can't "learn" a candidate) becomes "Hire, train and promote the strongest candidates".
+- "62% Ridership back to 2019" becomes "Ridership has recovered to 62% of its 2019 level".
+- "Enrollment Gain Loss Shift" becomes "Enrollment Loss".
+- "Seed adjacent capabilities that can widen the base" becomes "Build related services that reach more customers", when that's what "widen the base" means.
 
 ## Part 3. Substance and tone
 
@@ -123,18 +123,18 @@ Each category applies at three levels: single **words**, **phrases**, and standa
 - **Promotional or travel-guide tone.** Unrequested praise and reflexive adjectives: vibrant, rich, renowned, groundbreaking, nestled, in the heart of, boasts, diverse array, commitment to, world-class, cutting-edge, seamless.
 - **Vague authorities.** "Experts argue", "observers note", "research consistently shows", "several sources suggest", "industry reports". Name the source or drop the claim. Never call one source "several".
 - **Tacked-on -ing clauses.** Sentence-final ", highlighting...", ", underscoring...", ", ensuring...", ", reflecting...", ", contributing to...", ", fostering...". Delete them, or turn them into a real sentence with evidence.
-- **Empty abstraction.** "This unlocks value, fosters alignment, and drives meaningful impact." Name the observable change instead ("The new form removes one approval step").
-- **Process instead of reason.** "After several rounds of cross-functional review, we aligned on the next phase" tells the reader nothing about why. When the writer knows the reason (here, that the launch waited for Legal and Security to approve an exception), state it: "We delayed the launch until Legal and Security approved the exception." When the reason isn't available, ask for it in notes mode instead of inventing one.
-- **Synthetic balance.** "While remote work offers flexibility, it also presents unique challenges." Keep a contrast only when there's a real, named tradeoff.
-- **Canned empathy.** "I completely understand how frustrating and overwhelming this must feel." If acknowledgment is needed, make it short and specific.
+- **Empty abstraction.** "This initiative creates synergy, sparks alignment, and drives real impact." Name the observable change instead ("The new form cuts the approval steps from three to two").
+- **Process instead of reason.** "After extensive stakeholder consultation, we landed on a revised approach" tells the reader nothing about why. When the writer knows the reason (here, that the sensors won't arrive until April), state it: "We moved the launch to May because the sensors won't arrive until April." When the reason isn't available, ask for it in notes mode and don't invent one.
+- **Synthetic balance.** "While online classes offer convenience, they also come with unique challenges." Keep a contrast only when there's a real, named tradeoff.
+- **Canned empathy.** "I truly understand how stressful and overwhelming this must be for you." If acknowledgment is needed, make it short and specific.
 - **Canned endings.** "In conclusion", "Overall", "Ultimately", generic "challenges and future outlook" paragraphs, and closing recaps. End on the last real point.
 - **Copula avoidance.** "serves as", "stands as", "functions as", "boasts", "features", "offers" where "is", "are" or "has" works.
-- **Vague association.** "was associated with leadership of ExampleCorp" becomes "was CEO of ExampleCorp" when the relationship is known.
-- **Reflexive lists.** Habitual triads of adjectives or abstract nouns ("faster, smarter, and more intuitive", "simple, personalized, and valuable") and long rhythmic catalogues added after the point is made. Real lists of three things are fine.
-- **Over-hedging.** Keep only uncertainty that matches a real unknown. "It may potentially be worth considering whether the team could possibly delay the launch" becomes "The team could delay the launch."
-- **Bureaucratic wording.** "Stakeholders should be informed of the operational implications associated with this transition" becomes "Tell the affected teams what changes for them." "At this point in time, it would be advisable to begin the process of reviewing the draft" becomes "The team should review the draft."
-- **Compressed or indirect meaning.** "The practical event ceiling remains anchored to both a headcount cap and a percentage cap" becomes "Events are limited by a headcount cap and a room-capacity percentage."
-- **Oversimplification.** Never cut a qualifier that carries meaning. "Where to draw the line on speed investments" must not shrink to "Where to draw the line".
+- **Vague association.** "was associated with leadership of ExampleCorp" becomes "was CEO of ExampleCorp" when you know the relationship.
+- **Reflexive lists.** Habitual triads of adjectives or abstract nouns ("bold, fresh and inspiring", "clear, concise and compelling") and long rhythmic catalogues added after the point is made. Real lists of three things are fine.
+- **Over-hedging.** Keep only uncertainty that matches a real unknown. "It might perhaps be worth exploring whether we could potentially move the deadline" becomes "We could move the deadline."
+- **Bureaucratic wording.** "All relevant parties should be notified of the procedural ramifications of this change" becomes "Tell the people affected what will change for them." "At the present moment, it would be prudent to initiate a review of the policy" becomes "We should review the policy now."
+- **Compressed or indirect meaning.** "Capacity remains bounded by a dual seat-and-ratio constraint" becomes "The number of seats and the required staff-to-student ratio limit capacity."
+- **Oversimplification.** Never cut a qualifier that carries meaning. "When to stop funding the pilot program" must not shrink to "When to stop".
 
 ## Part 4. Vocabulary that signals AI writing
 
@@ -161,7 +161,7 @@ These words are a strong tell when several cluster together or when they decorat
 
 The StoryScope study ([arXiv 2604.03136](https://arxiv.org/abs/2604.03136)) compared 10,272 published human stories with stories that five models (Claude, GPT, Gemini, DeepSeek, Kimi) wrote from the same prompts. It could tell AI from human 93% of the time from story choices alone, with all style information removed. When a rewriting tool removed clichés, purple prose and redundant exposition, detection fell only from 95.5% to 93.9%. So for any text that tells a story or reflects on an experience, fixing sentences isn't enough. The tells below sit in what the text chooses to say. Figures in brackets are how often each pattern appeared in AI stories compared with human ones.
 
-**Two levels of change.** Most items below change only how something is expressed, and you can fix them in any default rewrite. A few would change the content (adding a subplot, reordering the timeline, changing an ending). Those are marked **structural**. Don't make structural changes unless the user asks for a deeper rewrite. In notes or review mode, suggest them. Even in a deeper rewrite, only reorder or trim the writer's existing material. Never invent events, characters, references, brands or places.
+**Two levels of change.** Most items below change only the wording, and you can fix them in any default rewrite. A few would change the content (adding a subplot, reordering the timeline, changing an ending). Those are marked **structural**. Don't make structural changes unless the user asks for a deeper rewrite. In notes or review mode, suggest them. Even in a deeper rewrite, only reorder or trim the writer's existing material. Never invent events, characters, references, brands or places.
 
 ### 6A. Over-explaining the meaning
 
@@ -204,7 +204,7 @@ AI stories cluster in one narrow region of "narrative space". Human stories are 
   - Claude: flat tension, quiet endings with an epilogue or flash-forward, an eerie mood.
   - GPT: rumor and gossip driving the plot, and a narrator looking back "years later".
   - Gemini: bleak, oppressive settings and very tidy endings with long wrap-ups.
-  - DeepSeek: a visible narrator, crucial context front-loaded, cyclical seasons.
+  - DeepSeek: a visible narrator, the important background given up front, cyclical seasons.
 
   When several of these show up in one draft, the text is leaning on model defaults. Use the 6A–6C fixes on them.
 
@@ -228,7 +228,7 @@ The script gives every text a score from 0 to 1 for how strongly it shows the pa
 - **0.60 to 1.00, "high":** many patterns or a flat rhythm. Rewrite fully.
 - **0.35 to 0.59, "medium":** some patterns or uneven spots. Fix what the report lists.
 - **0.00 to 0.34, "low":** few measurable patterns. Still apply the rules in Parts 1 to 6, because the script can't see everything (awkward phrasing, vague claims, illogical wording and most structural tells need judgment).
-- **Under 30 words:** no score, only the pattern list. From 30 to 100 words the score is dampened, and the report says so.
+- **Under 30 words:** no score, only the pattern list. From 30 to 100 words the script dampens the score, and the report says so.
 
 **The score is a gauge, not a verdict.** It counts patterns. It doesn't measure quality or accuracy, and it isn't the output of GPTZero, Turnitin or any other detector, so never present it as one. A low score doesn't prove a person wrote the text. Never invent a score by hand: if no code tool is available, write "Score: not available (no code tool in this chat)" and keep the pattern checks manual.
 
@@ -252,19 +252,19 @@ If the rewrite had to drop something that carried meaning or rhythm, add one lin
 ## Slide and label text
 
 When the text is slide content:
-- Titles describe the content or state the finding. "48% of European investors believe equities are overvalued" says more than "Investor perspectives". Titles are never commands.
+- Titles describe the content or state the finding. "Two-thirds of respondents prefer evening classes" says more than "Survey results". Titles are never commands.
 - Labels, column heads, legends and chart titles get the same checks as body text.
 - Wording copied from a prompt or source isn't exempt. If it's slop, fix it.
-- Keep standard domain terms (EBITDA, net leverage, margin expansion, "API returns 429 when the client exceeds the rate limit").
-- A good slide states a specific claim in its title, shows the evidence behind it, and uses plain terms.
+- Keep standard domain terms (EBITDA, p-value, net leverage, "the server returns 404 when the page doesn't exist").
+- A good slide makes one specific claim, shows the evidence behind it, and uses plain terms.
 
 ## Leave these alone
 
-- Accurate technical terms, legal conditions, and uncertainty that comes with a stated reason: "The estimate is preliminary because two regions have not reported." "The vendor may terminate only after giving 30 days' written notice."
-- Claims backed by a concrete result, source or constraint: "The 12 June accessibility audit found 14 missing labels." "Legal and Security must approve the exception before release."
-- Framing that narrows scope or helps navigation: "This memo covers the two launch decisions due Friday."
-- Parallel structure that separates a real list or logical relationship: "The red light means stop, and the green light means go."
-- Plain sentences that are already fine. Don't rewrite for the sake of change. Calibration examples marked "not slop" include "Toyota's Profit Structure", "Break-even volume is the number of vehicles needed to cover fixed and variable costs", "Mobilize resources to deliver products, services and change" and "40% of U.S. consumers said they were spending more carefully during COVID-19."
+- Accurate technical terms, legal conditions, and uncertainty that comes with a stated reason: "The forecast is provisional because March data isn't in yet." "Either party may end the lease with 60 days' written notice."
+- Claims backed by a concrete result, source or constraint: "The March safety inspection found nine blocked exits." "Finance must sign off before the purchase order goes out."
+- Framing that narrows scope or helps navigation: "This note covers the two hiring decisions due Thursday."
+- Parallel structure that separates a real list or logical relationship: "Green means the test passed, and red means it failed."
+- Plain sentences that are already fine. Don't rewrite for the sake of change. Lines like "Quarterly Enrollment by College", "Net margin is profit divided by revenue", "Train staff on the new booking system" (as a bullet in a plan) and "35% of respondents said they now shop online every week" need no edit.
 
 ## Self-check before delivering
 
@@ -284,41 +284,41 @@ When the text is slide content:
    - a character introduced by an appearance paragraph
    - an ending that sums up inner peace
    - specifics turned generic
-9. Compare it with the original. Every fact, number, name, event and real qualifier is still there. Nothing was invented, and you made no structural change unless the user asked for one.
+9. Compare it with the original. Every fact, number, name, event and real qualifier is still there. You invented nothing and made no structural change unless the user asked for one.
 10. Run the Part 7 report on the original and the finished text. Confirm that the after score is lower, that no Part 1 pattern is left, that hidden characters are gone, and that emoji, text in other alphabets and code came through unchanged.
 
 ## Review mode
 
-Use this when the user asks for flags rather than a rewrite. It follows the rationale style that the grading guidelines use.
+Use this when the user wants a list of flags and no rewrite.
 
 - Quote the exact words, say where they are (slide, paragraph or line number when one exists), name the category, explain in one sentence why it's a problem in this context, and give the plainer wording.
 - Use these categories: the five taxonomy names (Awkward/unnatural, Excessive/flowery, Vague/empty, Unnecessary, Illogical) and the AI-isms (Punctuation, "It's not X, it's Y", Passive voice, Imperative title, Slogan-like phrasing, Illustrative hedging). For narrative or reflective text, also use the Part 6 names: Stated lesson, Philosophical dialogue, Over-unified theme, Vague allusion, Embodied emotion, Setting as mirror, Sensory overload, Tidy resolution, Linear single-track plot, Appearance-first introduction, Generic sameness. Name every category that applies, and mark structural suggestions as such.
-- Write in the third person. Describe the text, not a reaction to it ("Slide 4 crowds three charts into the lower half", not "I don't like slide 4").
-- When the text is long, group findings under: Formulaic or slogan-like language. Vague or unsupported substance. Wordy or indirect language. Unnecessary framing or structure. AI-isms. General remarks (accuracy gaps and a suggested rewrite of the weakest line).
+- Write in the third person. Describe the text, not a reaction to it ("Paragraph 3 repeats the opening claim in different words", not "I don't like paragraph 3").
+- When the text is long, group findings under: Formulas and slogans. Vague or unsupported claims. Wordiness. Framing and structure. AI-isms. General notes (accuracy gaps and a suggested rewrite of the weakest line).
 - Start with the score line from `python3 titus_tools.py score`, then the findings. The script finds the countable patterns. Judgment finds the rest, so the findings list is always longer than the script's list.
 - Note what already works, so it's clear what to keep.
 - If the user brings back a revised draft, review the change: give the old and new scores, which findings are fixed, which remain (with the original quote), and which are new. New problems introduced by a revision are easy to miss, so flag them separately.
 
 Example finding:
-> Paragraph 2, "Data access is not a background detail. It's the heart of the user experience." This is the "It's not X, it's Y" AI-ism, because it rejects a claim nobody made in order to assert another. Plainer: "Data access shapes most of the user experience."
+> Paragraph 2, "Customer support is not a cost center. It's the heart of the brand." This is the "It's not X, it's Y" AI-ism, because it rejects a claim nobody made to assert another. Plainer: "Customer support shapes how people see the brand."
 
 ## Worked examples
 
-**Before:** "In today's fast-paced digital landscape, our new onboarding checklist isn't just a tracker — it's a gateway to a more seamless experience, fostering alignment and driving meaningful impact."
-**After:** "The new onboarding checklist shows new hires which setup steps they have finished."
+**Before:** "In today's fast-paced academic landscape, our new lab notebook template isn't just a form — it's a gateway to more reproducible science, fostering transparency and driving meaningful impact."
+**After:** "The new lab notebook template gives every experiment the same structure, which makes results easier to reproduce."
 
-**Before:** "Owners are set; risks are checked; approval is granted — and the launch moves forward."
-**After:** "Teams set owners, reviewers check risks, and leaders approve the launch."
+**Before:** "Data is cleaned; models are trained; results are reviewed — and the paper moves forward."
+**After:** "We clean the data, train the models and review the results before the paper goes out."
 
-**Before:** "Experts note that teams using this robust framework reach the same decision more often." (The writer's notes name the source as their team survey.)
-**After:** "Our team survey found that teams using the framework reached the same decision more often."
-(Without a named source, the plainest honest version drops the unnamed experts: "Teams using the framework reach the same decision more often.")
+**Before:** "Research consistently shows that this robust method gives more stable estimates (Lee, 2022)."
+**After:** "Lee (2022) found that the method gives more stable estimates."
+(The source was already in the draft, so the rewrite names it. Without a source, cut the claim or ask for one.)
 
-**Before:** "Jobs fell 38% from February to April 2020, then climbed back gradually—ending 2024 still just below the pre-shock level."
-**After:** "Jobs fell 38% from February to April 2020, then recovered gradually. By the end of 2024 they were still slightly below the February 2020 level."
+**Before:** "Ridership fell 45% between March and May 2020, then recovered slowly—ending 2023 still below its 2019 level."
+**After:** "Ridership fell 45% between March and May 2020, then recovered slowly. At the end of 2023 it was still below its 2019 level."
 
-**Before:** "A five-question pulse uses simple 0-10 scores and one verbatim follow-up to reveal what matters most."
-**After:** "The five-question survey uses a 0-10 scale and one open-ended question."
+**Before:** "A three-item touchpoint uses quick 1-5 ratings and one free-text prompt to capture the full picture."
+**After:** "The three-question check-in uses a 1-5 scale and one open-ended question."
 
 **Before (email):** "I hope this message finds you well! I wanted to reach out to touch base regarding the proposal, which was reviewed by our team last week. It's not just a budget request — it's a roadmap for sustainable growth. Please let me know if you have any questions!"
 **After (email):** "Our team reviewed the proposal last week. It sets out the budget we're requesting and what it would cover. I'm happy to walk you through the numbers."

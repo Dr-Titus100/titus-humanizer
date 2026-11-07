@@ -1,0 +1,42 @@
+# fixture: tests/fixtures/prose/report.txt
+
+AI-pattern score: 0.80 (high)
+Words: 110, sentences: 7
+Pattern density: 12.18 per 100 words, sentence-length variation: 0.3, word variety: 0.91
+  AI vocabulary x6, e.g. "landscape"
+  passive voice (heuristic) x2, e.g. "was launched"
+  inflated significance x2, e.g. "stands as a"
+  copula avoidance x2, e.g. "stands as"
+  reject-then-assert x1, e.g. "is not just about booking rooms. It's"
+  vague authority x1, e.g. "Experts agree"
+  tacked-on -ing clause x1, e.g. ", fostering"
+  synthetic balance x1, e.g. "While the new platform offers convenience, it also presents"
+  canned ending x1, e.g. ".
+
+Ultimately"
+  stock opener x1, e.g. "In today's fast-paced digital landscape"
+  sentence-initial connector x1, e.g. ". Moreover"
+Hidden characters found: none
+
+Hits by line:
+  line 1: AI vocabulary: "landscape"
+  line 1: AI vocabulary: "seamless"
+  line 1: AI vocabulary: "testament"
+  line 1: copula avoidance: "stands as"
+  line 1: inflated significance: "plays a vital role"
+  line 1: inflated significance: "stands as a"
+  line 1: stock opener: "In today's fast-paced digital landscape"
+  line 1: vague authority: "Experts agree"
+  line 3: AI vocabulary: "fostering"
+  line 3: AI vocabulary: "utilized"
+  line 3: canned ending: ".
+
+Ultimately"
+  line 3: copula avoidance: "serves as"
+  line 3: passive voice (heuristic): "been utilized"
+  line 3: passive voice (heuristic): "was launched"
+  line 3: sentence-initial connector: ". Moreover"
+  line 3: synthetic balance: "While the new platform offers convenience, it also presents"
+  line 3: tacked-on -ing clause: ", fostering"
+  line 5: AI vocabulary: "empowering"
+  line 5: reject-then-assert: "is not just about booking rooms. It's"

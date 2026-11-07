@@ -1,0 +1,20 @@
+JORDAN ELLIS
+Data Analyst
+Boise, ID
+jordan.ellis@example.com
+
+SUMMARY
+Data analyst who builds reporting dashboards and data pipelines for health care teams, using Python, SQL and Tableau.
+
+EXPERIENCE
+Data Analyst, Riverbend Health, Boise, ID                 Jul 2021 – Present
+• Built a reporting system that covers all 12 clinics.
+• Built Tableau dashboards that leadership now uses, which cut weekly reporting time by 40%.
+• Helped move the team's data to Snowflake.
+
+Research Assistant, Boise State University                May 2019 - Jun 2021
+• Analyzed survey data from 3,000 respondents in Python and R.
+• Documented each step of the analysis so other researchers could repeat it.
+
+SKILLS
+Python, SQL, R, Tableau and Snowflake

@@ -1,0 +1,43 @@
+# fixture: tests/fixtures/resume/ai_resume.txt
+
+AI-pattern score: 0.80 (high)
+Words: 141, sentences: 15
+Pattern density: 13.26 per 100 words, sentence-length variation: 0.65, word variety: 0.91
+  AI vocabulary x10, e.g. "leveraging"
+  arrow, bar or inline dot x6, e.g. "|"
+  em dash x2, e.g. "—"
+  passive voice (heuristic) x2, e.g. "were built"
+  tacked-on -ing clause x2, e.g. ", ensuring"
+  semicolon x1, e.g. ";"
+  not only / not just ... but x1, e.g. "not just building dashboards, but"
+  inflated significance x1, e.g. "pivotal role"
+  bureaucratic filler x1, e.g. "in order to"
+Hidden characters found: none
+
+Hits by line:
+  line 2: arrow, bar or inline dot: "|"
+  line 2: arrow, bar or inline dot: "|"
+  line 5: AI vocabulary: "fostering"
+  line 5: AI vocabulary: "leveraging"
+  line 5: AI vocabulary: "unlock"
+  line 5: em dash: "—"
+  line 5: not only / not just ... but: "not just building dashboards, but"
+  line 8: em dash: "—"
+  line 9: AI vocabulary: "robust"
+  line 9: AI vocabulary: "seamless"
+  line 9: tacked-on -ing clause: ", ensuring"
+  line 10: passive voice (heuristic): "was reduced"
+  line 10: passive voice (heuristic): "were built"
+  line 10: semicolon: ";"
+  line 11: AI vocabulary: "pivotal"
+  line 11: AI vocabulary: "showcasing"
+  line 11: inflated significance: "pivotal role"
+  line 11: tacked-on -ing clause: ", showcasing"
+  line 14: AI vocabulary: "Utilized"
+  line 14: AI vocabulary: "facilitate"
+  line 15: AI vocabulary: "meticulously"
+  line 15: bureaucratic filler: "in order to"
+  line 18: arrow, bar or inline dot: "•"
+  line 18: arrow, bar or inline dot: "•"
+  line 18: arrow, bar or inline dot: "•"
+  line 18: arrow, bar or inline dot: "•"

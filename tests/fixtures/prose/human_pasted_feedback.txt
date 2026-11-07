@@ -1,0 +1,3 @@
+Thanks for the draft. I read it twice and marked three places where the argument​ skips a step. The biggest gap is in section 2, where the sample size changes from 120 to 98 without an explanation. Can you add a sentence on the 22 people who dropped out?
+
+The figures look good. Figure 3 needs units on the y-axis, and the legend covers part of the last bar. I'd also move the pаper by Ortiz and Lam into the related work, since it uses the same survey.​

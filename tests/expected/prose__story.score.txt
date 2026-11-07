@@ -1,0 +1,24 @@
+# fixture: tests/fixtures/prose/story.txt
+
+AI-pattern score: 0.80 (high)
+Words: 140, sentences: 12
+Pattern density: 5.18 per 100 words, sentence-length variation: 0.41, word variety: 0.79
+  emotion as body sensation x3, e.g. "chest tightened"
+  tidy inner resolution x3, e.g. "For the first time in years"
+  passive voice (heuristic) x1, e.g. "was faded"
+  stated lesson x1, e.g. "He realized that"
+  setting as mirror x1, e.g. "mirroring the"
+  decorative smell x1, e.g. "smelled of"
+Hidden characters found: none
+
+Hits by line:
+  line 3: decorative smell: "smelled of"
+  line 3: emotion as body sensation: "a chill ran down his spine"
+  line 3: emotion as body sensation: "chest tightened"
+  line 3: emotion as body sensation: "heart pounded"
+  line 3: setting as mirror: "mirroring the"
+  line 5: passive voice (heuristic): "was faded"
+  line 7: stated lesson: "He realized that"
+  line 7: tidy inner resolution: "For the first time in years"
+  line 7: tidy inner resolution: "finally felt"
+  line 7: tidy inner resolution: "made peace with"

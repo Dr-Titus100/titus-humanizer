@@ -1,0 +1,9 @@
+# fixture: tests/fixtures/prose/human_note.txt
+
+AI-pattern score: 0.03 (low)
+Words: 95, sentences: 9
+Pattern density: 0.0 per 100 words, sentence-length variation: 0.58, word variety: 0.89
+Hidden characters found: none
+
+Hits by line:
+  none

@@ -1,0 +1,10 @@
+# fixture: tests/fixtures/prose/story_rewrite.txt
+
+AI-pattern score: 0.24 (low)
+Words: 68, sentences: 7
+Pattern density: 0.59 per 100 words, sentence-length variation: 0.39, word variety: 0.75
+  decorative smell x1, e.g. "smelled of"
+Hidden characters found: none
+
+Hits by line:
+  line 3: decorative smell: "smelled of"

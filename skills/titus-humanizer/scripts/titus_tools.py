@@ -295,7 +295,7 @@ def report(original, rewrite):
     if found_new:
         lines.append(f"Hidden characters removed from the rewrite: {describe_found(found_new)}")
     if before.get("dampened") or after.get("dampened"):
-        lines.append("Note: short text, so the score is dampened and less reliable.")
+        lines.append("Note: the text is short, so the script dampened the score and it is less reliable.")
     return "\n".join(lines), clean_new
 
 

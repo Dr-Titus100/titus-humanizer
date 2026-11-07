@@ -1,0 +1,9 @@
+# fixture: tests/fixtures/prose/human_pasted_feedback.txt
+
+AI-pattern score: 0.09 (low)
+Words: 89, sentences: 7
+Pattern density: 0.0 per 100 words, sentence-length variation: 0.51, word variety: 0.86
+Hidden characters found: 2 zero-width spaces, 1 unusual space, 1 look-alike letter
+
+Hits by line:
+  none
