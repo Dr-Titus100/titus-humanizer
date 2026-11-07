@@ -96,7 +96,7 @@ Each category applies at three levels: single **words**, **phrases**, and standa
 - **Vague authorities.** "Experts argue", "observers note", "research consistently shows", "several sources suggest", "industry reports". Name the source or drop the claim. Never call one source "several".
 - **Tacked-on -ing clauses.** Sentence-final ", highlighting...", ", underscoring...", ", ensuring...", ", reflecting...", ", contributing to...", ", fostering...". Delete them, or turn them into a real sentence with evidence.
 - **Empty abstraction.** "This unlocks value, fosters alignment, and drives meaningful impact." Name the observable change instead ("The new form removes one approval step").
-- **Process instead of reason.** "After several rounds of cross-functional review, we aligned on the next phase" becomes "We delayed the launch until Legal and Security approved the exception."
+- **Process instead of reason.** "After several rounds of cross-functional review, we aligned on the next phase" tells the reader nothing about why. When the writer knows the reason (here, that the launch waited for Legal and Security to approve an exception), state it: "We delayed the launch until Legal and Security approved the exception." When the reason isn't available, ask for it in notes mode instead of inventing one.
 - **Synthetic balance.** "While remote work offers flexibility, it also presents unique challenges." Keep a contrast only when there's a real, named tradeoff.
 - **Canned empathy.** "I completely understand how frustrating and overwhelming this must feel." If acknowledgment is needed, make it short and specific.
 - **Canned endings.** "In conclusion", "Overall", "Ultimately", generic "challenges and future outlook" paragraphs, and closing recaps. End on the last real point.
@@ -244,8 +244,9 @@ Example finding:
 **Before:** "Owners are set; risks are checked; approval is granted — and the launch moves forward."
 **After:** "Teams set owners, reviewers check risks, and leaders approve the launch."
 
-**Before:** "Experts note that teams using this robust framework reach the same decision more often."
-**After:** "The survey found that teams using the framework reached the same decision more often."
+**Before:** "Experts note that teams using this robust framework reach the same decision more often." (The writer's notes name the source as their team survey.)
+**After:** "Our team survey found that teams using the framework reached the same decision more often."
+(Without a named source, the plainest honest version drops the unnamed experts: "Teams using the framework reach the same decision more often.")
 
 **Before:** "Jobs fell 38% from February to April 2020, then climbed back gradually—ending 2024 still just below the pre-shock level."
 **After:** "Jobs fell 38% from February to April 2020, then recovered gradually. By the end of 2024 they were still slightly below the February 2020 level."
