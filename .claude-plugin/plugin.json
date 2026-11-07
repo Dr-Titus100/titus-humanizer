@@ -1,7 +1,7 @@
 {
   "name": "titus-humanizer",
-  "version": "1.0.0",
-  "description": "Rewrites text so it reads like a careful, plain-spoken person wrote it, and flags AI-writing patterns in review mode.",
+  "version": "1.1.0",
+  "description": "Rewrites text so it reads like a careful, plain-spoken person wrote it. Cleans hidden characters, scores AI-writing patterns before and after, and reviews drafts on request.",
   "author": {
     "name": "Titus Nyarko Nde",
     "url": "https://github.com/Dr-Titus100"
@@ -9,5 +9,11 @@
   "homepage": "https://github.com/Dr-Titus100/titus-humanizer",
   "repository": "https://github.com/Dr-Titus100/titus-humanizer",
   "license": "MIT",
-  "keywords": ["writing", "editing", "plain-language", "ai-writing", "style"]
+  "keywords": [
+    "writing",
+    "editing",
+    "plain-language",
+    "ai-writing",
+    "style"
+  ]
 }

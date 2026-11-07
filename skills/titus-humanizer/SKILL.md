@@ -1,6 +1,6 @@
 ---
 name: "titus-humanizer"
-description: "Rewrites text so it reads like a careful, plain-spoken person wrote it, removing AI-writing patterns at the word, sentence and story level while keeping every fact. Also reviews text and flags AI-writing tells. Use when the user asks to humanize, polish, rewrite, de-slop or check writing for AI patterns, including emails, reports, slides, essays and stories."
+description: "Rewrites text so it reads like a careful, plain-spoken person wrote it, removing AI-writing patterns at the word, sentence and story level while keeping every fact. Cleans hidden characters, scores AI-writing patterns from 0 to 1 before and after, and reviews drafts on request. Use when the user asks to humanize, polish, rewrite, de-slop or check writing for AI patterns, including emails, reports, slides, resumes, essays and stories."
 ---
 
 # titus-humanizer
@@ -9,7 +9,7 @@ This skill makes writing read like a careful, plain-spoken person wrote it. The 
 
 ## Default behavior
 
-- **Text pasted with no other instruction:** return only the rewritten text. No preamble ("Here's a polished version"), no closing offer ("Let me know if..."), no list of changes.
+- **Text pasted with no other instruction:** return the rewritten text, then the short report from Part 7 (the before and after scores, the patterns left, and the hidden characters removed). Nothing else: no preamble ("Here's a polished version"), no closing offer ("Let me know if..."), no list of changes.
 - **The user asks what changed, or for notes:** after the rewrite, add a short list. Each item quotes the original words, names the problem, and gives the fix.
 - **The user asks "does this sound AI?", "find the slop", or wants a review:** use Review mode (near the end of this file).
 - **Keep the substance.** Every fact, number, name, date, citation, technical term and real qualification survives. Never invent sources, figures or specifics to make vague text concrete. If a sentence can't be made specific without information you don't have, write the plainest honest version. In notes mode you can also say what detail would help.
@@ -17,18 +17,46 @@ This skill makes writing read like a careful, plain-spoken person wrote it. The 
 
 ## Workflow
 
-1. Read the whole text first. Work out the audience, purpose, format (email, slide, paper, post) and register.
-2. Find problems in this order: hard rules (Part 1), the five taxonomy categories (Part 2), substance and tone (Part 3), vocabulary (Part 4), structure (Part 5). If the text tells a story or reflects on an experience (fiction, personal statements, narrative essays, blog posts, speeches, anecdotes in a cover letter), also check the narrative tells in Part 6.
-3. Rewrite sentence by sentence, choosing the plainest accurate wording.
-4. Run the self-check near the end of this file and fix anything it catches.
-5. Deliver.
+1. Clean hidden characters from the user's text first (Part 0) and score the original (Part 7), so the rewrite starts from clean text and you know which patterns to look for.
+2. Read the whole text. Work out the audience, purpose, format (email, slide, paper, post) and register.
+3. Find problems in this order: hard rules (Part 1), the five taxonomy categories (Part 2), substance and tone (Part 3), vocabulary (Part 4), structure (Part 5). If the text tells a story or reflects on an experience (fiction, personal statements, narrative essays, blog posts, speeches, anecdotes in a cover letter), also check the narrative tells in Part 6.
+4. Rewrite sentence by sentence, choosing the plainest accurate wording.
+5. Run the self-check near the end of this file and fix anything it catches.
+6. Score the rewrite and run the cleanup on it (Part 7). If the after score is still "high", or any Part 1 pattern is left, do one more pass on the flagged spots only. Then deliver the text with the report.
+
+## Part 0. Hidden-character cleanup
+
+Text copied from AI tools, PDFs, web pages and word processors often carries characters you can't see. Some of these are zero-width spaces, stray byte-order marks, soft hyphens, text-direction controls and invisible tag characters. Others are odd spaces (non-breaking, thin, ideographic) and look-alike letters, such as a Cyrillic "а" inside an English word. They break search, spell-check, word counts and pasting into forms, and some tools treat them as a sign of machine-generated text. This step removes them. It's text hygiene for the user's own writing.
+
+**What to remove or fix**
+- **Zero-width and invisible marks:** zero-width space (U+200B), word joiner (U+2060), byte-order mark (U+FEFF), soft hyphen (U+00AD), invisible math operators (U+2061–2064), Mongolian vowel separator (U+180E), Hangul fillers (U+115F, U+1160, U+3164, U+FFA0).
+- **Zero-width joiner and non-joiner** (U+200D, U+200C) when they sit between ordinary Latin letters or spaces.
+- **Text-direction controls:** U+202A–202E, U+2066–2069, U+200E, U+200F, U+061C.
+- **Invisible tag characters:** U+E0000–E007F.
+- **Variation selectors** (U+FE00–FE0F, U+E0100–E01EF) that don't follow an emoji.
+- **Private-use characters and non-characters.**
+- **Unusual spaces:** non-breaking, narrow non-breaking, en/em/thin/hair spaces (U+2000–200A), U+205F, U+3000, U+1680. Replace each with a normal space.
+- **Look-alike letters:** Cyrillic or Greek letters that look Latin, inside words that are otherwise plain English. Replace them with the Latin letter.
+
+**What to keep**
+- Emoji sequences. The joiners and variation selectors inside 👨‍👩‍👧 or ❤️ are part of the emoji.
+- Joiners inside Arabic, Persian, Hindi and other scripts that need them for correct spelling.
+- Real text in other alphabets. A Russian or Greek word stays exactly as written.
+- Anything inside code, commands, URLs, file paths and identifiers.
+- Required disclosures and labels, which are visible text and never part of this cleanup.
+
+**How to run it.** When a code tool is available (a shell or Python), use the `clean` command of `scripts/titus_tools.py` in this skill's folder. Run it on the original text and again on the finished rewrite. The Part 7 report lists what it removed. When no code tool is available, retype the text in the rewrite and don't copy characters across, and say in the report that hidden characters couldn't be checked by script this time. For Word files or PDFs, extract the text first and clean the extracted text. For a .docx the user wants back as a .docx, clean the text inside it and keep the formatting.
+
+**Be honest about what this does.** It removes invisible and look-alike characters. That's all. It doesn't remove statistical watermarks from AI models, it doesn't strip metadata from files, and it can't prove that a person wrote the text. Never describe the result as "undetectable" or "proven human".
 
 ## Part 1. Hard rules (never appear in the output)
 
 The grading guidelines mark these as slop every time they appear, whatever the context. Don't produce them, and remove them from the user's text.
 
 **1. Punctuation.** No em dashes (—). No hyphens or en dashes used as dashes to set off an aside or a break ("X - and Y - Z"). No semicolons. No inline dot separators (• · ●) between items on one line. No vertical bars ( | ) as separators. No arrows (→, ->, >, ⇒) in prose, titles or labels.
-- Still fine: hyphens inside compound words ("well-written"), en dashes in ranges ("pages 5–10", "2019–2021"), commas, periods, question marks, parentheses.
+- Still fine: hyphens inside compound words ("well-written"), commas, periods, question marks, parentheses.
+- **Ranges are fine,** with or without spaces around the dash: "pages 5–10", "2019–2021", "Jul 2020 – Jun 2021", "May 2019 - Aug 2019", "2018 – Present", "Fall 2018 – Spring 2020", "Q1 – Q3". A dash only counts as a break when it sets off an aside or joins two clauses, as in "closed in 2020 – and nobody noticed".
+- **Bullets at the start of a line are fine** (•, ●, ▪, - or *). They're list markers, as on a resume. The inline-dot rule covers only symbols used between items on the same line, as in "Python • SQL • R". Write those as a comma list ("Python, SQL and R").
 - Fix by splitting into two sentences, using a comma with "and", "but", "so" or "because", or using parentheses for a true aside.
 - Use colons sparingly. One colon that introduces a real list or a definition is fine. Avoid colon-driven rhythm: "Label: fragment" lines ("Universities: reinforce guidance. Students: reduce activity."), lead-ins such as "Key idea:", "Bottom line:" or "Why it matters:", and colon reveals ("The answer: simplicity").
 
@@ -186,6 +214,41 @@ AI stories cluster in one narrow region of "narrative space". Human stories are 
 - **Personal statements, narrative essays, blog posts, speeches:** 6A, 6B and 6D fully. Use 6C mainly for openings, endings and warm-ups.
 - **Emails, reports, slides, technical writing:** mostly the moral-closer and specifics rules (6A stated lessons, 6D keep the writer's specifics). The other parts rarely apply.
 
+## Part 7. AI-pattern score and report
+
+The script gives every text a score from 0 to 1 for how strongly it shows the patterns this skill removes. Use it to check the work and to show the user what changed.
+
+**What the score measures**
+- **Pattern density.** Weighted hits per 100 words for the patterns in Parts 1 to 6 that a script can find reliably: dashes used as breaks (date and number ranges don't count), semicolons, arrows, bars and dots between items on the same line (bullets at the start of a line don't count), reject-then-assert framing, passive voice, slogans, illustrative hedging, chatbot residue, inflated significance, vague authorities, -ing tails, copula avoidance, canned endings, AI vocabulary, stock openers, bold-label bullets, and the StoryScope tells (stated lessons, body-sensation emotion, setting as mirror, decorative smells, tidy inner resolutions). This is the main part of the score. A text dense with these patterns scores high whatever else is true.
+- **Rhythm.** How much sentence lengths vary. Very even lengths, or nearly every sentence falling between 8 and 20 words, push the score up. That catches the flat, chopped-up rhythm that over-edited text falls into.
+- **Repeated openings.** Many sentences starting with the same word.
+- **Word variety.** A small weight for vocabulary that sits in the narrow band typical of model output.
+
+**How to read it**
+- **0.60 to 1.00, "high":** many patterns or a flat rhythm. Rewrite fully.
+- **0.35 to 0.59, "medium":** some patterns or uneven spots. Fix what the report lists.
+- **0.00 to 0.34, "low":** few measurable patterns. Still apply the rules in Parts 1 to 6, because the script can't see everything (awkward phrasing, vague claims, illogical wording and most structural tells need judgment).
+- **Under 30 words:** no score, only the pattern list. From 30 to 100 words the score is dampened, and the report says so.
+
+**The score is a gauge, not a verdict.** It counts patterns. It doesn't measure quality or accuracy, and it isn't the output of GPTZero, Turnitin or any other detector, so never present it as one. A low score doesn't prove a person wrote the text. Never invent a score by hand: if no code tool is available, write "Score: not available (no code tool in this chat)" and keep the pattern checks manual.
+
+**How to run it**
+1. Save the user's original text to `original.txt`. In the commands below, `titus_tools.py` means `scripts/titus_tools.py` in this skill's folder.
+2. Run `python3 titus_tools.py clean original.txt > cleaned.txt` and rewrite from `cleaned.txt`.
+3. Save the rewrite to `rewrite.txt`, then run `python3 titus_tools.py report original.txt rewrite.txt`.
+4. Use `python3 titus_tools.py score FILE` for a detailed breakdown of one text (density, rhythm, word variety, each pattern with an example).
+
+**The report** goes under the rewrite, in plain lines like these:
+
+> AI-pattern score: 0.80 (high) before, 0.22 (low) after
+> Patterns before: AI vocabulary x11, inflated significance x2, tacked-on -ing clause x2, em dash x1, semicolon x1
+> Patterns left after: none
+> Hidden characters removed: 1 zero-width space
+
+If the rewrite had to drop something that carried meaning or rhythm, add one line saying what was lost, so the user can put it back. Keep the report this short in default mode. In notes or review mode, add the detailed `score` breakdown.
+
+**On AI watermarks.** Some AI providers build statistical watermarks into word choice so readers and regulators can tell text came from an AI. This skill doesn't try to remove them and doesn't claim to. A full rewrite in the writer's own words changes wording anyway, but that's a side effect, and no tool here can check for a watermark. Never describe output as watermark-free, undetectable or proven human.
+
 ## Slide and label text
 
 When the text is slide content:
@@ -205,7 +268,7 @@ When the text is slide content:
 
 ## Self-check before delivering
 
-1. Search the output for — – ; | → • and for " - " used as a dash. Remove every one that isn't a range or a compound word.
+1. Search the output for — – ; | → • and for " - " used as a dash. Remove every one that isn't a range (including spaced date ranges such as "Jul 2020 – Jun 2021"), a compound word or a bullet at the start of a line.
 2. Search for "not", "n't", "rather than", "instead of", "just" and "only". Remove any reject-then-assert framing.
 3. Search for a form of "to be" followed by a past participle (was approved, were delayed, is marked, been reviewed). Name the actor unless the sentence describes a state.
 4. Check every title and label. Does any start with a bare command verb? Does any decorate without informing?
@@ -222,6 +285,7 @@ When the text is slide content:
    - an ending that sums up inner peace
    - specifics turned generic
 9. Compare it with the original. Every fact, number, name, event and real qualifier is still there. Nothing was invented, and you made no structural change unless the user asked for one.
+10. Run the Part 7 report on the original and the finished text. Confirm that the after score is lower, that no Part 1 pattern is left, that hidden characters are gone, and that emoji, text in other alphabets and code came through unchanged.
 
 ## Review mode
 
@@ -231,7 +295,9 @@ Use this when the user asks for flags rather than a rewrite. It follows the rati
 - Use these categories: the five taxonomy names (Awkward/unnatural, Excessive/flowery, Vague/empty, Unnecessary, Illogical) and the AI-isms (Punctuation, "It's not X, it's Y", Passive voice, Imperative title, Slogan-like phrasing, Illustrative hedging). For narrative or reflective text, also use the Part 6 names: Stated lesson, Philosophical dialogue, Over-unified theme, Vague allusion, Embodied emotion, Setting as mirror, Sensory overload, Tidy resolution, Linear single-track plot, Appearance-first introduction, Generic sameness. Name every category that applies, and mark structural suggestions as such.
 - Write in the third person. Describe the text, not a reaction to it ("Slide 4 crowds three charts into the lower half", not "I don't like slide 4").
 - When the text is long, group findings under: Formulaic or slogan-like language. Vague or unsupported substance. Wordy or indirect language. Unnecessary framing or structure. AI-isms. General remarks (accuracy gaps and a suggested rewrite of the weakest line).
+- Start with the score line from `python3 titus_tools.py score`, then the findings. The script finds the countable patterns. Judgment finds the rest, so the findings list is always longer than the script's list.
 - Note what already works, so it's clear what to keep.
+- If the user brings back a revised draft, review the change: give the old and new scores, which findings are fixed, which remain (with the original quote), and which are new. New problems introduced by a revision are easy to miss, so flag them separately.
 
 Example finding:
 > Paragraph 2, "Data access is not a background detail. It's the heart of the user experience." This is the "It's not X, it's Y" AI-ism, because it rejects a claim nobody made in order to assert another. Plainer: "Data access shapes most of the user experience."
@@ -261,3 +327,7 @@ Example finding:
 **Before (story):** "Elena stood at the window as the rain fell, mirroring the storm inside her. Her chest tightened, ice crawled down her spine, and the scent of wet earth and old memories filled her lungs. She realized, at last, that letting go was not the same as forgetting. It was a way of carrying him with her."
 **After (story):** "Elena stood at the window and watched the rain. She was afraid. She decided she could let him go without forgetting him."
 (The rewrite removes the setting-as-mirror line, the stack of body sensations, the decorative smell, the reject-then-assert aphorism and the stated lesson. It keeps her decision, which is the actual event, and names the feeling the body cues pointed to. It doesn't invent a reason for her fear, because the draft gave none.)
+
+## Script
+
+`scripts/titus_tools.py`, in this skill's folder, has three commands: `clean`, `score` and `report`. It uses only the Python standard library, so it runs anywhere Claude or ChatGPT can run Python. If the file is missing, ask the user to install the full skill folder from https://github.com/Dr-Titus100/titus-humanizer.
