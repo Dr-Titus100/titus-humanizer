@@ -20,6 +20,9 @@ jobs:
           test "$name" = "titus-humanizer" || { echo "SKILL.md name is '$name'"; exit 1; }
           python3 -m json.tool .claude-plugin/plugin.json > /dev/null
           python3 -m json.tool .claude-plugin/marketplace.json > /dev/null
+          python3 -m py_compile skills/titus-humanizer/scripts/titus_tools.py
+          printf 'It is not just a tool \xe2\x80\x94 it is a game-changer that leverages robust synergy to unlock value for every team in the organization today.\n' > sample.txt
+          python3 skills/titus-humanizer/scripts/titus_tools.py score sample.txt
 
       - name: Build zip
         run: |
