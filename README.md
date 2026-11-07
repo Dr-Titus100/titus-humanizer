@@ -146,7 +146,7 @@ The rules draw on three sources.
 
 ## Contributing
 
-Issues and pull requests are welcome. A useful report includes a before-and-after pair: a draft, the skill's output, and what you expected instead. A new rule fits best when it comes with an example of the pattern and its plainer version.
+Issues and pull requests are welcome. Make every change on the `dev` branch, and open pull requests against `dev`. Changes go to `main` only after the tests pass on `dev`. A useful report includes a before-and-after pair: a draft, the skill's output, and what you expected instead. A new rule fits best when it comes with an example of the pattern and its plainer version.
 
 If you change `scripts/titus_tools.py`, run the tests first:
 
