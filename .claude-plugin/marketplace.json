@@ -1,0 +1,17 @@
+{
+  "name": "titus-humanizer",
+  "description": "An editing skill that rewrites text to read like a careful, plain-spoken person wrote it.",
+  "owner": {
+    "name": "Titus Nyarko Nde",
+    "url": "https://github.com/Dr-Titus100"
+  },
+  "plugins": [
+    {
+      "name": "titus-humanizer",
+      "source": "./",
+      "description": "Rewrites text so it reads like a careful, plain-spoken person wrote it. Cleans hidden characters, scores AI-writing patterns before and after, and reviews drafts on request.",
+      "version": "1.1.0",
+      "category": "writing"
+    }
+  ]
+}

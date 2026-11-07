@@ -1,0 +1,17 @@
+# Changelog
+
+## v1.1.0 (2026-11-07)
+
+- Hidden-character cleanup (Part 0). The skill removes zero-width spaces, byte-order marks, text-direction controls, unusual spaces and look-alike letters before it rewrites, and checks the rewrite again afterwards. Emoji, other alphabets and code stay as they are.
+- AI-pattern score and report (Part 7). `scripts/titus_tools.py` scores the original and the rewrite from 0 to 1, and every default rewrite now ends with a four-line report. When the rewrite still scores high, the skill takes another pass at the flagged spots.
+- Review mode starts with the score and can compare a revised draft with the earlier one.
+- Date ranges with spaces ("Jul 2020 – Jun 2021") and bullets at the start of a line no longer count as punctuation problems, so resumes keep their layout.
+- The Custom GPT instructions now run the script through Code Interpreter.
+
+## v1.0.0 (2026-11-07)
+
+First public release.
+
+- Rewrite and review modes for AI-writing patterns at the word, sentence and story level.
+- Story-level rules (Part 6) based on the StoryScope study of AI fiction.
+- Install options for Claude Code, claude.ai, the ChatGPT app, Codex and Custom GPTs.

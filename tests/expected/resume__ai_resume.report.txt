@@ -1,0 +1,7 @@
+# before: tests/fixtures/resume/ai_resume.txt
+# after:  tests/fixtures/resume/ai_resume_rewrite.txt
+
+AI-pattern score: 0.80 (high) before, 0.01 (low) after
+Patterns before: AI vocabulary x10, arrow, bar or inline dot x6, em dash x2, passive voice (heuristic) x2, tacked-on -ing clause x2, semicolon x1
+Patterns left after: none
+Hidden characters removed: none

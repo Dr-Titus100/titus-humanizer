@@ -1,0 +1,9 @@
+# fixture: tests/fixtures/resume/human_resume.txt
+
+AI-pattern score: 0.01 (low)
+Words: 131, sentences: 19
+Pattern density: 0.0 per 100 words, sentence-length variation: 0.71, word variety: 0.94
+Hidden characters found: none
+
+Hits by line:
+  none

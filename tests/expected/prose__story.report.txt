@@ -1,0 +1,8 @@
+# before: tests/fixtures/prose/story.txt
+# after:  tests/fixtures/prose/story_rewrite.txt
+
+AI-pattern score: 0.80 (high) before, 0.24 (low) after
+Patterns before: emotion as body sensation x3, tidy inner resolution x3, passive voice (heuristic) x1, stated lesson x1, setting as mirror x1, decorative smell x1
+Patterns left after: decorative smell x1
+Hidden characters removed: none
+Note: the text is short, so the script dampened the score and it is less reliable.

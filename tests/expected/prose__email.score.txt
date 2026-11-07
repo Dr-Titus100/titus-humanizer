@@ -1,0 +1,27 @@
+# fixture: tests/fixtures/prose/email.txt
+
+AI-pattern score: 0.80 (high)
+Words: 111, sentences: 11
+Pattern density: 8.15 per 100 words, sentence-length variation: 0.94, word variety: 0.78
+  AI vocabulary x3, e.g. "testament"
+  inflated significance x2, e.g. "a testament to"
+  em dash x1, e.g. "—"
+  semicolon x1, e.g. ";"
+  reject-then-assert x1, e.g. "It's not just a data set — it's"
+  passive voice (heuristic) x1, e.g. "was collected"
+  chatbot residue x1, e.g. "let me know if"
+  sentence-initial connector x1, e.g. ". Additionally"
+Hidden characters found: none
+
+Hits by line:
+  line 5: AI vocabulary: "testament"
+  line 5: inflated significance: "a testament to"
+  line 5: passive voice (heuristic): "was collected"
+  line 7: AI vocabulary: "pivotal"
+  line 7: AI vocabulary: "underscores"
+  line 7: em dash: "—"
+  line 7: inflated significance: "pivotal role"
+  line 7: reject-then-assert: "It's not just a data set — it's"
+  line 7: semicolon: ";"
+  line 7: sentence-initial connector: ". Additionally"
+  line 9: chatbot residue: "let me know if"

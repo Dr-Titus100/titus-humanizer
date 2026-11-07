@@ -1,0 +1,23 @@
+PRIYA RAMAN
+Mechanical Engineer
+Denver, CO
+priya.raman@example.com
+
+EXPERIENCE
+Design Engineer, Kestrel Bikes                          Jun 2020 – Present
+- Lead a two-person team that designs carbon-fiber frames for gravel bikes.
+- Moved frame stress checks from hand calculations to finite-element models.
+- Cut prototype costs by 18% in 2023 by bringing carbon layups in-house.
+
+Test Engineer, Alpine Wind Systems                      Fall 2018 – Spring 2020
+- Ran fatigue tests on 40 turbine blade samples and wrote the weekly test reports.
+- Redesigned a load fixture, which cut setup time from three hours to 45 minutes.
+
+Summer Intern, Front Range Robotics                     May 2017 - Aug 2017
+* Wrote Python scripts that logged motor temperatures during 12-hour runs.
+
+EDUCATION
+B.S. Mechanical Engineering, Colorado School of Mines   2014–2018
+
+SKILLS
+SolidWorks, ANSYS, Python, MATLAB and GD&T

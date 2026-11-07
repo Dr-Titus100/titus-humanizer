@@ -1,0 +1,18 @@
+JORDAN ELLIS
+Data Analyst | Boise, ID | jordan.ellis@example.com
+
+PROFESSIONAL SUMMARY
+Results-driven data analyst with a proven track record of leveraging cutting-edge tools to unlock actionable insights. Passionate about fostering a data-driven culture — not just building dashboards, but transforming how organizations make decisions.
+
+EXPERIENCE
+Data Analyst, Riverbend Health — Boise, ID                Jul 2021 – Present
+• Spearheaded a robust reporting framework, ensuring seamless visibility across 12 clinics.
+• Dashboards were built in Tableau and adopted by leadership; weekly reporting time was reduced by 40%.
+• Played a pivotal role in the migration to Snowflake, showcasing strong cross-functional collaboration.
+
+Research Assistant, Boise State University                May 2019 - Jun 2021
+• Utilized Python and R to facilitate the analysis of survey data from 3,000 respondents.
+• Additionally, meticulously documented every step of the pipeline in order to ensure reproducibility.
+
+SKILLS
+Python • SQL • R • Tableau • Snowflake

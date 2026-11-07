@@ -1,0 +1,8 @@
+# before: tests/fixtures/prose/report.txt
+# after:  tests/fixtures/prose/report_rewrite.txt
+
+AI-pattern score: 0.80 (high) before, 0.11 (low) after
+Patterns before: AI vocabulary x6, passive voice (heuristic) x2, inflated significance x2, copula avoidance x2, reject-then-assert x1, vague authority x1
+Patterns left after: none
+Hidden characters removed: none
+Note: the text is short, so the script dampened the score and it is less reliable.

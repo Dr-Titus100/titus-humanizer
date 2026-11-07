@@ -1,0 +1,9 @@
+# fixture: tests/fixtures/prose/report_rewrite.txt
+
+AI-pattern score: 0.11 (low)
+Words: 42, sentences: 3
+Pattern density: 0.0 per 100 words, sentence-length variation: 0.43, word variety: 0.88
+Hidden characters found: none
+
+Hits by line:
+  none

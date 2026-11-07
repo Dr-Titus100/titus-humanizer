@@ -1,0 +1,9 @@
+# fixture: tests/fixtures/prose/email_rewrite.txt
+
+AI-pattern score: 0.01 (low)
+Words: 73, sentences: 8
+Pattern density: 0.0 per 100 words, sentence-length variation: 1.23, word variety: 0.83
+Hidden characters found: none
+
+Hits by line:
+  none
