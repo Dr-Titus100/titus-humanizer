@@ -27,7 +27,7 @@ jobs:
       - name: Build zip
         run: |
           cd skills
-          zip -r ../titus-humanizer.zip titus-humanizer -x '*.DS_Store'
+          zip -r ../titus-humanizer.zip titus-humanizer -x '*.DS_Store' -x '*__pycache__*'
           cd ..
           unzip -l titus-humanizer.zip
 
