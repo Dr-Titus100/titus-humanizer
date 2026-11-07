@@ -33,8 +33,25 @@ def _is_emoji(ch):
     return bool(ch) and (unicodedata.category(ch) == "So" or 0x1F000 <= ord(ch) <= 0x1FAFF)
 
 
-def clean(text):
-    found = Counter()
+# Code blocks, inline code and URLs pass through untouched.
+PROTECTED = re.compile(r"`{3}.*?`{3}|`[^`\n]*`|\b(?:https?|ftp)://\S+|\bwww\.\S+", re.S)
+REMOVED = "\x00"   # marks where a character was removed, so spacing is fixed only there
+
+
+def _in_flag_tags(chars, i):
+    """True when chars[i] is a tag character inside a flag sequence such as England's (U+1F3F4 + tags + U+E007F)."""
+    j = i
+    while j > 0 and 0xE0020 <= ord(chars[j - 1]) <= 0xE007E:
+        j -= 1
+    if j == 0 or ord(chars[j - 1]) != 0x1F3F4:
+        return False
+    k = i
+    while k < len(chars) and 0xE0020 <= ord(chars[k]) <= 0xE007E:
+        k += 1
+    return k < len(chars) and ord(chars[k]) == 0xE007F
+
+
+def _clean_prose(text, found):
     out = []
     chars = list(text)
     for i, ch in enumerate(chars):
@@ -43,29 +60,40 @@ def clean(text):
         nxt = chars[i + 1] if i + 1 < len(chars) else ""
         if cp in ZERO_WIDTH:
             found[ZERO_WIDTH[cp]] += 1
+            out.append(REMOVED)
         elif cp in JOINERS:
             keep = _is_emoji(prev) or _is_emoji(nxt) or COMPLEX_SCRIPTS.match(prev or " ") or COMPLEX_SCRIPTS.match(nxt or " ")
             if keep:
                 out.append(ch)
             else:
                 found[JOINERS[cp]] += 1
+                out.append(REMOVED)
         elif cp in BIDI:
             found["text-direction control"] += 1
+            out.append(REMOVED)
         elif 0xE0000 <= cp <= 0xE007F:
-            found["invisible tag character"] += 1
+            if _in_flag_tags(chars, i) or (cp == 0xE007F and i and 0xE0020 <= ord(prev) <= 0xE007E and _in_flag_tags(chars, i - 1)):
+                out.append(ch)
+            else:
+                found["invisible tag character"] += 1
+                out.append(REMOVED)
         elif 0xFE00 <= cp <= 0xFE0F or 0xE0100 <= cp <= 0xE01EF:
             if _is_emoji(prev):
                 out.append(ch)
             else:
                 found["variation selector"] += 1
+                out.append(REMOVED)
         elif 0xE000 <= cp <= 0xF8FF or 0xF0000 <= cp <= 0x10FFFD or 0xFDD0 <= cp <= 0xFDEF or (cp & 0xFFFE) == 0xFFFE:
             found["private-use or non-character"] += 1
+            out.append(REMOVED)
         elif cp in SPACES:
             found["unusual space"] += 1
             out.append(" ")
         else:
             out.append(ch)
     text = "".join(out)
+    # Where a removal left two spaces side by side ("word \u200b word"), keep one. Other space runs stay as they are.
+    text = re.sub(r" *\x00[ \x00]*", lambda m: " " if " " in m.group(0) else "", text)
 
     def fix_word(m):
         w = m.group(0)
@@ -76,10 +104,18 @@ def clean(text):
             return "".join(HOMOGLYPHS.get(c, c) for c in w)
         return w
 
-    text = re.sub(r"\w+", fix_word, text)
-    if found:
-        text = re.sub(r"(?<=\S) {2,}(?=\S)", " ", text)
-    return text, found
+    return re.sub(r"\w+", fix_word, text)
+
+
+def clean(text):
+    found = Counter()
+    parts, last = [], 0
+    for m in PROTECTED.finditer(text):
+        parts.append(_clean_prose(text[last:m.start()], found))
+        parts.append(m.group(0))
+        last = m.end()
+    parts.append(_clean_prose(text[last:], found))
+    return "".join(parts), found
 
 
 def describe_found(found):
