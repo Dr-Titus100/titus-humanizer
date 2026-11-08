@@ -72,7 +72,7 @@ Each release on the [Releases page](https://github.com/Dr-Titus100/titus-humaniz
 
 ### Claude (claude.ai and the desktop app)
 
-1. In Settings, open Capabilities and turn on "Code execution and file creation". Skills need it.
+1. In Settings, open Capabilities, and turn on Create and edit files ("Code execution and file creation" in older layout).
 2. Open [Customize > Skills](https://claude.ai/customize/skills), choose "Upload a skill" and select `titus-humanizer.zip`.
 3. Turn the skill on in your skills list.
 
