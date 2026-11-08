@@ -4,6 +4,8 @@ titus-humanizer is an editing skill for Claude and ChatGPT. It rewrites text so 
 
 It works on emails, reports, slide decks, resumes, papers, cover letters, personal statements, blog posts and fiction.
 
+You can also try it without installing anything at [dr-titus100.github.io/titus-web](https://dr-titus100.github.io/titus-web/tools/titus-humanizer/). The checker there scores text in your browser for free, and the rewrite page works with your own Gemini, Claude or OpenAI key.
+
 ## What it changes
 
 **Before:**
