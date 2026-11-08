@@ -68,6 +68,8 @@ Once it's installed, ask in plain words. The skill loads when the request fits.
 
 ## Installation
 
+The simplest way to install is to copy this repository's link, https://github.com/Dr-Titus100/titus-humanizer, into Claude, Claude Code, ChatGPT or Codex and ask it to help you install the skill. It will handle the installation for you, or walk you through any step it can't do itself. To install it yourself, follow the steps below.
+
 Each release on the [Releases page](https://github.com/Dr-Titus100/titus-humanizer/releases) includes `titus-humanizer.zip`. The same zip works in claude.ai, the Claude desktop app and ChatGPT. Upload it as it is, without unzipping it.
 
 ### Claude (claude.ai and the desktop app)
