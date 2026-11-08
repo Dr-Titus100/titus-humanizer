@@ -48,3 +48,21 @@ jobs:
           gh release view "$GITHUB_REF_NAME" > /dev/null 2>&1 \
             || gh release create "$GITHUB_REF_NAME" --title "$GITHUB_REF_NAME" --notes-file CHANGELOG.md
           gh release upload "$GITHUB_REF_NAME" titus-humanizer.zip --clobber
+
+      - name: Rebuild the website
+        # Tells titus-web to rebuild, so the site picks up this release right away.
+        # Needs a SITE_DISPATCH_TOKEN secret. Without it, the site picks up the release on its nightly build.
+        if: startsWith(github.ref, 'refs/tags/')
+        env:
+          SITE_TOKEN: ${{ secrets.SITE_DISPATCH_TOKEN }}
+        run: |
+          if [ -z "$SITE_TOKEN" ]; then
+            echo "No SITE_DISPATCH_TOKEN secret, so titus-web will pick up $GITHUB_REF_NAME on its nightly build."
+            exit 0
+          fi
+          curl -fsS -X POST \
+            -H "Authorization: Bearer $SITE_TOKEN" \
+            -H "Accept: application/vnd.github+json" \
+            https://api.github.com/repos/Dr-Titus100/titus-web/dispatches \
+            -d "{\"event_type\":\"skill-released\",\"client_payload\":{\"skill\":\"titus-humanizer\",\"tag\":\"$GITHUB_REF_NAME\"}}"
+          echo "Asked titus-web to rebuild with $GITHUB_REF_NAME."
