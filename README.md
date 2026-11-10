@@ -52,7 +52,7 @@ Each rewrite ends with a self-check against the original, so no fact, number, na
 
 Date ranges such as "Jul 2020 – Jun 2021" and bullets at the start of a line pass the punctuation rules, so resumes come through intact.
 
-Quoted text stays exactly as written. Text in quotation marks, block quotes and dialogue keeps its wording and punctuation, whoever wrote it, including you. The skill rewrites only the text around a quote and mentions any problem inside one in its notes. The score skips quoted text too, so a quotation full of AI phrasing doesn't count against your rewrite.
+Quoted text stays exactly as written. Text in quotation marks, block quotes and dialogue keeps its wording and punctuation, whoever wrote it, including you. The skill rewrites only the text around a quote and mentions any problem inside one in its notes. The score skips quoted text too, so a quotation full of AI phrasing doesn't count against your rewrite. Single quotes count as a quotation only when both the opening and the closing mark are there, so apostrophes in words like "don't" and "students'" stay in the score.
 
 The skill aims at clear, specific writing. The score counts patterns. It doesn't measure quality, it isn't the output of GPTZero, Turnitin or any other detector, and a low score doesn't prove a person wrote the text. The cleanup removes invisible characters only. It doesn't remove AI watermarks or file metadata.
 

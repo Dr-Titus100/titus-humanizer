@@ -109,6 +109,22 @@ class Score(unittest.TestCase):
             with self.subTest(text=text):
                 self.assertEqual(labels_in(text), set())
 
+    def test_single_quoted_text_is_not_scored(self):
+        for text in ("She wrote 'we leverage robust tools; truly a testament.' Then she left.",
+                     "She wrote \u2018we leverage robust tools; truly a testament\u2019 and left.",
+                     "'We leverage robust tools,' she wrote."):
+            with self.subTest(text=text):
+                self.assertEqual(labels_in(text), set())
+
+    def test_apostrophes_without_a_partner_are_still_scored(self):
+        for text in ("The students' work leverages robust tools.",
+                     "Don't leverage robust tools.",
+                     "'Tis a robust plan.",
+                     "The boys' bikes and the girls' robust bikes.",
+                     "We don\u2019t leverage robust tools."):
+            with self.subTest(text=text):
+                self.assertIn("AI vocabulary", labels_in(text))
+
     def test_text_around_a_quote_is_still_scored(self):
         self.assertEqual(labels_in('She said "fine." Moreover, we leverage robust tools.'),
                          {"sentence-initial connector", "AI vocabulary"})

@@ -192,6 +192,10 @@ WORD_RE = re.compile(r"[A-Za-z0-9À-ɏ']+")
 # Quoted text is left as written, so it isn't scored: double-quoted passages
 # (straight or curly, within one paragraph) and block-quote lines starting with ">".
 QUOTED = re.compile(r'\u201c(?:(?!\n\s*\n)[^\u201d])*\u201d|"(?:(?!\n\s*\n)[^"])*"|^[ \t]*>.*$', re.M)
+# A single-quoted passage needs both marks: an opening ' or \u2018 after a space, a bracket or the
+# start of a line, and a closing ' or \u2019 before a space, punctuation or the end of a line.
+# A lone apostrophe ("don't", "students' work") has no partner, so it stays in the score.
+SINGLE_QUOTED = re.compile(r"(?<![^\s(\[])['\u2018](?=\S)(?:(?!\n\s*\n).)*?(?<=\S)['\u2019](?=[\s.,;:!?)\]]|$)", re.S)
 
 
 def _strip_code(text):
@@ -199,7 +203,9 @@ def _strip_code(text):
     text = re.sub(r"`{3}.*?`{3}", " ", text, flags=re.S)
     text = re.sub(r"`[^`]*`", " ", text)
     # Keep a sentence end that sits inside the closing quote, so the next sentence still starts a sentence.
-    return QUOTED.sub(lambda m: " . " if re.search(r"[.!?]\W?$", m.group(0)) else " ", text)
+    def blank(m):
+        return " . " if re.search(r"[.!?]\W?$", m.group(0)) else " "
+    return SINGLE_QUOTED.sub(blank, QUOTED.sub(blank, text))
 
 
 def _sentences(text):
