@@ -1,0 +1,7 @@
+Subject: Follow-up on the Harlow Clinic feedback
+
+Our support team ran a feedback session with the Harlow Clinic last week. The main finding is that the scheduling tool takes too many steps.
+
+Dr. Mensah wrote in her survey, "Our front desk told me, 'The new booking screen is robust; it just takes three clicks too many.' I agree with them." She also wrote that "the reminder texts are a game-changer — patients actually show up."
+
+Our account manager, Priya, summed it up in the debrief: 'When Dr. Mensah said "three clicks too many," she meant the reschedule flow, not the first booking.' So the reschedule flow is where the extra steps are, and the team plans to act on this feedback there.

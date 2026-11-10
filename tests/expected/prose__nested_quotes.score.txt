@@ -1,0 +1,38 @@
+# fixture: tests/fixtures/prose/nested_quotes.txt
+
+AI-pattern score: 0.80 (high)
+Words: 116, sentences: 11
+Pattern density: 11.81 per 100 words, sentence-length variation: 0.62, word variety: 0.83
+  AI vocabulary x7, e.g. "facilitated"
+  inflated significance x3, e.g. "pivotal moment"
+  passive voice (heuristic) x2, e.g. "was facilitated"
+  em dash x1, e.g. "—"
+  reject-then-assert x1, e.g. "It's not just a usability issue — it's"
+  chatbot residue x1, e.g. "let me know if"
+  tacked-on -ing clause x1, e.g. ", highlighting"
+  canned ending x1, e.g. ".
+
+In conclusion"
+  sentence-initial connector x1, e.g. ".  Moreover"
+Hidden characters found: none
+
+Hits by line:
+  line 3: AI vocabulary: "facilitated"
+  line 3: AI vocabulary: "pivotal"
+  line 3: AI vocabulary: "seamless"
+  line 3: AI vocabulary: "underscores"
+  line 3: inflated significance: "pivotal moment"
+  line 3: passive voice (heuristic): "was facilitated"
+  line 3: tacked-on -ing clause: ", highlighting"
+  line 7: AI vocabulary: "testament"
+  line 7: canned ending: ".
+
+In conclusion"
+  line 7: em dash: "—"
+  line 7: inflated significance: "a testament to"
+  line 7: inflated significance: "deeply rooted"
+  line 7: reject-then-assert: "It's not just a usability issue — it's"
+  line 9: AI vocabulary: "elevate"
+  line 9: AI vocabulary: "leveraging"
+  line 9: chatbot residue: "let me know if"
+  line 9: passive voice (heuristic): "is committed"

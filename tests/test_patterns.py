@@ -137,7 +137,12 @@ class Score(unittest.TestCase):
                      'Ama wrote, "Kofi told me, \'We leverage robust tools.\'"',
                      "Ama wrote, 'Kofi told me, \"We leverage robust tools.\"'",
                      "\u201cKofi said \u2018we leverage robust tools\u2019 and left,\u201d Ama wrote.",
-                     'Ama wrote, "Kofi said \'the students\' work is robust\' today."'):
+                     'Ama wrote, "Kofi said \'the students\' work is robust\' today."',
+                     "\u201cKofi said \u2018we don\u2019t leverage robust tools\u2019 anymore,\u201d Ama wrote.",
+                     '("Kofi told me, \'We leverage robust tools.\'") Ama wrote that.',
+                     'Ama wrote, "Kofi said \'we leverage robust tools\' twice," and left.',
+                     '\u201cAma said, \u2018Kofi wrote \u201cwe leverage robust tools\u201d twice.\u2019\u201d',
+                     '"Kofi said \'robust\' and Ama said \'seamless\' in the same meeting."'):
             with self.subTest(text=text):
                 self.assertEqual(labels_in(text), set())
 

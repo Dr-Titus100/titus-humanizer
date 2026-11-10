@@ -54,10 +54,19 @@ def read(path):
 
 
 def _blank_code(text):
-    """Blank out code the same way the scorer skips it, but keep every newline so line numbers stay right."""
+    """Blank out code and quoted text the same way the scorer skips them, but keep every newline
+    so line numbers stay right."""
     blank = lambda m: re.sub(r"[^\n]", " ", m.group(0))
     text = re.sub(r"`{3}.*?`{3}", blank, text, flags=re.S)
-    return re.sub(r"`[^`]*`", blank, text)
+    text = re.sub(r"`[^`]*`", blank, text)
+    for rx in (tools.BLOCK_QUOTE, tools.QUOTED):
+        text = rx.sub(blank, text)
+    return text
+
+
+def quotations(text):
+    """Every quotation the script finds, in reading order. Nested quotes come back inside their outer quote."""
+    return [m.group(0) for m in tools.QUOTED.finditer(text)]
 
 
 def hits_by_line(text):

@@ -1,0 +1,8 @@
+# before: tests/fixtures/prose/nested_quotes.txt
+# after:  tests/fixtures/prose/nested_quotes_rewrite.txt
+
+AI-pattern score: 0.80 (high) before, 0.03 (low) after
+Patterns before: AI vocabulary x7, inflated significance x3, passive voice (heuristic) x2, em dash x1, reject-then-assert x1, chatbot residue x1
+Patterns left after: none
+Hidden characters removed: none
+Note: the text is short, so the script dampened the score and it is less reliable.

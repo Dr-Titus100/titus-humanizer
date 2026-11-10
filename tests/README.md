@@ -16,7 +16,7 @@ python3 -m unittest discover -s tests -v
 | --- | --- |
 | `test_cleanup.py` | What the cleanup removes (zero-width spaces, text-direction controls, stray tag characters, odd spaces, look-alike letters, including inside quotations) and what it keeps (emoji, flags, Persian and Russian text, code, URLs, aligned resume columns) |
 | `test_patterns.py` | One sentence each pattern must catch and one it must leave alone, plus the score's thresholds, the 30-word minimum, the dampening of short texts and the check that the score skips code and quoted text but still counts apostrophes ("don't", "students'") and inch marks ("a 12" tablet"). A new pattern without an example here fails the suite. |
-| `test_examples.py` | The resume and prose examples in `fixtures/`, compared with the stored output in `expected/`. It also checks that every rewrite scores lower than its original and keeps no hard-rule pattern, and that plain human writing scores low. |
+| `test_examples.py` | The resume and prose examples in `fixtures/`, compared with the stored output in `expected/`. It also checks that every rewrite scores lower than its original, keeps no hard-rule pattern and keeps every quotation word for word, and that plain human writing scores low. |
 
 ## The examples
 
@@ -24,6 +24,7 @@ python3 -m unittest discover -s tests -v
 
 - A file ending in `_rewrite.txt` is a hand-edited rewrite of the file with the same name. Each pair has a stored before-and-after report.
 - A file starting with `human_` is plain writing that should pass. `human_resume.txt` uses date ranges such as "Fall 2018 – Spring 2020" and bullets at the start of lines, which the punctuation rules allow. `human_pasted_feedback.txt` contains zero-width spaces, a non-breaking space and a Cyrillic "а" inside an English word, so it tests the cleanup on a whole document.
+- `nested_quotes.txt` is an email with quotes inside quotes. Its rewrite keeps every quotation word for word and fixes only the text around them.
 - The other files are drafts full of AI-writing patterns.
 
 For each example, `expected/` stores what the script prints for it, followed by every pattern it found and the line it found it on:

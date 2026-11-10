@@ -9,8 +9,8 @@ stored output with:
 import os
 import unittest
 
-from support import (all_snapshots, diff, fixtures, hard_rule_labels, hits_by_line, pairs, read,
-                     tools, FIXTURES)
+from support import (all_snapshots, diff, fixtures, hard_rule_labels, hits_by_line, pairs, quotations,
+                     read, tools, FIXTURES)
 
 
 class StoredOutput(unittest.TestCase):
@@ -40,6 +40,16 @@ class BeforeAndAfter(unittest.TestCase):
                 self.assertEqual(before["tier"], "high")
                 self.assertEqual(after["tier"], "low")
                 self.assertLess(after["score"], before["score"])
+
+    def test_every_quotation_survives_word_for_word(self):
+        for original, rewrite in pairs():
+            with self.subTest(pair=rewrite):
+                after = read(os.path.join(FIXTURES, rewrite))
+                for quote in quotations(read(os.path.join(FIXTURES, original))):
+                    self.assertIn(quote, after)
+
+    def test_nested_quotes_example_keeps_all_three_quotations(self):
+        self.assertEqual(len(quotations(read(os.path.join(FIXTURES, "prose", "nested_quotes_rewrite.txt")))), 3)
 
     def test_no_hard_rule_pattern_left_in_a_rewrite(self):
         hard = set(hard_rule_labels())
