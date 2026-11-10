@@ -132,6 +132,19 @@ class Score(unittest.TestCase):
             with self.subTest(text=text):
                 self.assertNotIn("AI vocabulary", labels_in(text))
 
+    def test_nested_quotes(self):
+        for text in ('Ama wrote, "Kofi told me, \'We leverage robust tools; truly pivotal.\' I laughed."',
+                     'Ama wrote, "Kofi told me, \'We leverage robust tools.\'"',
+                     "Ama wrote, 'Kofi told me, \"We leverage robust tools.\"'",
+                     "\u201cKofi said \u2018we leverage robust tools\u2019 and left,\u201d Ama wrote.",
+                     'Ama wrote, "Kofi said \'the students\' work is robust\' today."'):
+            with self.subTest(text=text):
+                self.assertEqual(labels_in(text), set())
+
+    def test_sentence_after_nested_quotes_is_still_a_sentence(self):
+        text = 'Ama wrote, "Kofi told me, \'Fine.\'" Moreover, we leverage it.'
+        self.assertEqual(labels_in(text), {"sentence-initial connector", "AI vocabulary"})
+
     def test_inch_and_foot_marks_are_still_scored(self):
         for text in ('A 12" tablet and a 15" laptop are robust.',
                      "He is 5' 11\" tall and robust."):

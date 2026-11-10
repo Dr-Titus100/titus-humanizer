@@ -209,7 +209,7 @@ def _strip_code(text):
     text = re.sub(r"`[^`]*`", " ", text)
     # When a quote ends a sentence, leave a period in its place so the script still finds the next sentence.
     def blank(m):
-        return " . " if re.search(r"[.!?]\W?$", m.group(0)) else " "
+        return " . " if re.search(r"[.!?]\W*$", m.group(0)) else " "
     for rx in (BLOCK_QUOTE, QUOTED):
         text = rx.sub(blank, text)
     return text
