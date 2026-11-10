@@ -1,6 +1,6 @@
 {
   "name": "titus-humanizer",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Rewrites text so it reads like a careful, plain-spoken person wrote it. Cleans hidden characters, scores AI-writing patterns before and after, and reviews drafts on request.",
   "author": {
     "name": "Titus Nyarko Nde",
