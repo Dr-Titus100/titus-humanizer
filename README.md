@@ -52,7 +52,12 @@ Each rewrite ends with a self-check against the original, so no fact, number, na
 
 Date ranges such as "Jul 2020 – Jun 2021" and bullets at the start of a line pass the punctuation rules, so resumes come through intact.
 
-Quoted text stays exactly as written. Text in quotation marks, block quotes and dialogue keeps its wording and punctuation, whoever wrote it, including you. The skill rewrites only the text around a quote and mentions any problem inside one in its notes. The score skips quoted text too, so a quotation full of AI phrasing doesn't count against your rewrite. The script counts a quotation only when it finds an opening mark after a space or the start of a line and a closing mark before a space or punctuation, in the same paragraph. So it still scores apostrophes, as in "don't" and "students'", and inch marks, as in "a 12" tablet". Quotes nested inside other quotes work too, as long as the levels alternate between double and single marks. The script doesn't handle three levels that reuse straight double quotes, as in "Ama said, 'Kofi said "fine" twice.'", and part of that quotation may count toward the score. The rewrite still leaves it untouched.
+Quoted text stays exactly as written. Text in quotation marks, block quotes and dialogue keeps its wording and punctuation, whoever wrote it, including you. The skill rewrites only the text around a quote and mentions any problem inside one in its notes. The score skips quoted text too, so a quotation full of AI phrasing doesn't count against your rewrite. The script counts a quotation only when it finds an opening mark after a space or the start of a line and a closing mark before a space or punctuation, in the same paragraph. So it still scores apostrophes, as in "don't" and "students'", and inch marks, as in "a 12" tablet". Quotes nested inside other quotes work too, as long as the levels alternate between double and single marks.
+
+The script has two known limits. In both, part of a quotation may count toward the score, but the rewrite still leaves the whole quotation untouched.
+
+- Three levels of quotes that reuse straight double quotes, as in "Ama said, 'Kofi said "fine" twice.'"
+- A straight double quote used as an inch mark inside a quotation, as in "the 12" model is robust". The script reads 12" as the end of the quotation.
 
 The skill aims at clear, specific writing. The score counts patterns. It doesn't measure quality, it isn't the output of GPTZero, Turnitin or any other detector, and a low score doesn't prove a person wrote the text. The cleanup removes invisible characters only. It doesn't remove AI watermarks or file metadata.
 
