@@ -152,9 +152,22 @@ class Score(unittest.TestCase):
 
     def test_inch_and_foot_marks_are_still_scored(self):
         for text in ('A 12" tablet and a 15" laptop are robust.',
-                     "He is 5' 11\" tall and robust."):
+                     "He is 5' 11\" tall and robust.",
+                     "He is 6'2\" tall and robust.",
+                     'Print a 12" x 18" poster on robust paper.',
+                     'The 12", 15" and 17" sizes are robust.',
+                     'Cut it to 8". Robust tools help.'):
             with self.subTest(text=text):
                 self.assertIn("AI vocabulary", labels_in(text))
+
+    def test_inch_marks_next_to_a_real_quote(self):
+        for text in ('The 27" monitor is robust. She said "we leverage it." Then she left.',
+                     'She said "we leverage it." The 27" monitor is robust.',
+                     'A 2" pipe and a "seamless" claim are robust.'):
+            with self.subTest(text=text):
+                labels = labels_in(text)
+                self.assertIn("AI vocabulary", labels)
+                self.assertEqual([h for h in tools.score(text)["patterns"] if h[0] == "AI vocabulary"][0][1], 1)
 
     def test_text_around_a_quote_is_still_scored(self):
         self.assertEqual(labels_in('She said "fine." Moreover, we leverage robust tools.'),
