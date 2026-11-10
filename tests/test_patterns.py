@@ -125,6 +125,19 @@ class Score(unittest.TestCase):
             with self.subTest(text=text):
                 self.assertIn("AI vocabulary", labels_in(text))
 
+    def test_quotes_inside_brackets_dashes_and_other_quotes(self):
+        for text in ('("We leverage robust tools.") She left.',
+                     'She wrote\u2014"we leverage robust tools"\u2014and left.',
+                     "'\"We leverage robust tools,\" she said' was the note."):
+            with self.subTest(text=text):
+                self.assertNotIn("AI vocabulary", labels_in(text))
+
+    def test_inch_and_foot_marks_are_still_scored(self):
+        for text in ('A 12" tablet and a 15" laptop are robust.',
+                     "He is 5' 11\" tall and robust."):
+            with self.subTest(text=text):
+                self.assertIn("AI vocabulary", labels_in(text))
+
     def test_text_around_a_quote_is_still_scored(self):
         self.assertEqual(labels_in('She said "fine." Moreover, we leverage robust tools.'),
                          {"sentence-initial connector", "AI vocabulary"})

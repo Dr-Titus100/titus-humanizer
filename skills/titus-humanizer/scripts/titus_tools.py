@@ -189,13 +189,18 @@ FILTERS = {"dash used as a break": lambda body, m: not _is_range(body, m)}
 WORD_RE = re.compile(r"[A-Za-z0-9À-ɏ']+")
 
 
-# Quoted text is left as written, so it isn't scored: double-quoted passages
-# (straight or curly, within one paragraph) and block-quote lines starting with ">".
-QUOTED = re.compile(r'\u201c(?:(?!\n\s*\n)[^\u201d])*\u201d|"(?:(?!\n\s*\n)[^"])*"|^[ \t]*>.*$', re.M)
-# A single-quoted passage needs both marks: an opening ' or \u2018 after a space, a bracket or the
-# start of a line, and a closing ' or \u2019 before a space, punctuation or the end of a line.
-# A lone apostrophe ("don't", "students' work") has no partner, so it stays in the score.
-SINGLE_QUOTED = re.compile(r"(?<![^\s(\[])['\u2018](?=\S)(?:(?!\n\s*\n).)*?(?<=\S)['\u2019](?=[\s.,;:!?)\]]|$)", re.S)
+# Quoted text is left as written, so it isn't scored. A quotation needs an opening and a closing
+# mark in the same paragraph. The opening mark comes after a space, a bracket, a dash, another
+# quote mark or the start of a line. The closing mark comes before a space, punctuation, a bracket,
+# a dash, another quote mark or the end of a line. That keeps apostrophes ("don't", "students'")
+# and inch marks (a 12" tablet) in the score. Block-quote lines starting with ">" are skipped too.
+_OPEN_AFTER = r"(?<![^\s(\[{\u2014\u2013\"'\u201c\u2018])"
+_CLOSE_BEFORE = r"(?=[\s.,;:!?)\]}\u2014\u2013\"'\u201d\u2019]|$)"
+_INSIDE = r"(?=\S)(?:(?!\n\s*\n).)*?(?<=\S)"
+# One pattern for both kinds, so the outer quote wins when one sits inside the other.
+QUOTED = re.compile(_OPEN_AFTER + r"(?:[\"\u201c]" + _INSIDE + r"[\"\u201d]|['\u2018]" + _INSIDE + r"['\u2019])"
+                    + _CLOSE_BEFORE, re.S | re.M)
+BLOCK_QUOTE = re.compile(r"^[ \t]*>.*$", re.M)
 
 
 def _strip_code(text):
@@ -205,7 +210,9 @@ def _strip_code(text):
     # When a quote ends a sentence, leave a period in its place so the script still finds the next sentence.
     def blank(m):
         return " . " if re.search(r"[.!?]\W?$", m.group(0)) else " "
-    return SINGLE_QUOTED.sub(blank, QUOTED.sub(blank, text))
+    for rx in (BLOCK_QUOTE, QUOTED):
+        text = rx.sub(blank, text)
+    return text
 
 
 def _sentences(text):
