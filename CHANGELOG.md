@@ -4,6 +4,7 @@
 
 - Quoted text stays exactly as written. Quotations, block quotes, quoted titles and dialogue keep their wording and punctuation, whoever wrote them. The skill rewrites the text around a quote and mentions problems inside one in its notes.
 - The score skips text in quotation marks and block quotes, as it already skipped code. It counts a quotation only when the opening mark comes after a space or the start of a line and the closing mark comes before a space or punctuation, in the same paragraph. Single and double quotes follow the same rule, so apostrophes ("don't", "students'") and inch marks ("a 12" tablet") stay in the score.
+- When the text has quotations, the report adds a line saying how many were left as written and not scored. If any changed, it says so.
 - Tests for quoted text in the score and the cleanup, including quotes nested inside other quotes, and a before-and-after example (`tests/fixtures/prose/nested_quotes.txt`) whose rewrite must keep every quotation word for word.
 
 ## v1.0.0 (2026-11-07)

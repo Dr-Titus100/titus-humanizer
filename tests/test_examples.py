@@ -10,7 +10,7 @@ import os
 import unittest
 
 from support import (all_snapshots, diff, fixtures, hard_rule_labels, hits_by_line, pairs, quotations,
-                     read, tools, FIXTURES)
+                     read, run_cli, tools, FIXTURES)
 
 
 class StoredOutput(unittest.TestCase):
@@ -47,6 +47,21 @@ class BeforeAndAfter(unittest.TestCase):
                 after = read(os.path.join(FIXTURES, rewrite))
                 for quote in quotations(read(os.path.join(FIXTURES, original))):
                     self.assertIn(quote, after)
+
+    def test_report_says_quotations_were_left_as_written(self):
+        out, _ = run_cli("report", os.path.join(FIXTURES, "prose", "nested_quotes.txt"),
+                         os.path.join(FIXTURES, "prose", "nested_quotes_rewrite.txt"))
+        self.assertIn("Quoted text: 3 quotations left as written and not scored", out)
+
+    def test_report_flags_a_changed_quotation(self):
+        line = tools._quote_line('She said "we leverage robust tools." Then she left.',
+                                 'She said "we use good tools." Then she left.')
+        self.assertEqual(line, "Quoted text: 0 of 1 quotation left as written. Restore the changed ones from the original.")
+
+    def test_report_has_no_quote_line_without_quotations(self):
+        out, _ = run_cli("report", os.path.join(FIXTURES, "prose", "email.txt"),
+                         os.path.join(FIXTURES, "prose", "email_rewrite.txt"))
+        self.assertNotIn("Quoted text", out)
 
     def test_nested_quotes_example_keeps_all_three_quotations(self):
         self.assertEqual(len(quotations(read(os.path.join(FIXTURES, "prose", "nested_quotes_rewrite.txt")))), 3)

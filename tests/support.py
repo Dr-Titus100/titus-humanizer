@@ -66,7 +66,7 @@ def _blank_code(text):
 
 def quotations(text):
     """Every quotation the script finds, in reading order. Nested quotes come back inside their outer quote."""
-    return [m.group(0) for m in tools.QUOTED.finditer(text)]
+    return tools.quotations(text)
 
 
 def hits_by_line(text):

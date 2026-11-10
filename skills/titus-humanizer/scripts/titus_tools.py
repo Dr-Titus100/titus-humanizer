@@ -215,6 +215,28 @@ def _strip_code(text):
     return text
 
 
+def quotations(text):
+    """Every quotation and block-quote line the script skips, in reading order. A quote nested
+    inside another one comes back as part of the outer quote."""
+    found = [(m.start(), m.group(0)) for m in BLOCK_QUOTE.finditer(text)]
+    blanked = BLOCK_QUOTE.sub(lambda m: " " * len(m.group(0)), text)
+    found += [(m.start(), m.group(0)) for m in QUOTED.finditer(blanked)]
+    return [q for _, q in sorted(found)]
+
+
+def _quote_line(original, rewrite):
+    """One report line saying the quotations were left as written, or which ones changed."""
+    quotes = quotations(original)
+    if not quotes:
+        return None
+    kept = sum(q in rewrite for q in quotes)
+    n = len(quotes)
+    noun = "quotation" if n == 1 else "quotations"
+    if kept == n:
+        return f"Quoted text: {n} {noun} left as written and not scored"
+    return f"Quoted text: {kept} of {n} {noun} left as written. Restore the changed ones from the original."
+
+
 def _sentences(text):
     lines = [l.strip() for l in text.splitlines() if l.strip()]
     chunks = re.split(r"(?<=[.!?])\s+|\n+", "\n".join(lines))
@@ -313,6 +335,9 @@ def report(original, rewrite):
         f"Patterns left after: {_pattern_line(after)}",
         f"Hidden characters removed: {describe_found(found_orig)}",
     ]
+    quote_line = _quote_line(clean_orig, clean_new)
+    if quote_line:
+        lines.append(quote_line)
     if found_new:
         lines.append(f"Hidden characters removed from the rewrite: {describe_found(found_new)}")
     if before.get("dampened") or after.get("dampened"):
@@ -342,6 +367,9 @@ if __name__ == "__main__":
         for label, count, sample in sorted(r["patterns"], key=lambda h: -h[1]):
             print(f"  {label} x{count}, e.g. \"{sample[:60]}\"")
         print(f"Hidden characters found: {describe_found(found)}")
+        n = len(quotations(cleaned))
+        if n:
+            print(f"Quoted text: {n} quotation{'' if n == 1 else 's'} not scored")
     else:
         text, _ = report(_read(sys.argv[2]), _read(sys.argv[3]))
         print(text)

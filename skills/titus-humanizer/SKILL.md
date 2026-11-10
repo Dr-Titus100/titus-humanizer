@@ -247,6 +247,8 @@ The script gives every text a score from 0 to 1 for how strongly it shows the pa
 > Patterns left after: none
 > Hidden characters removed: 1 zero-width space
 
+When the text has quotations, the report adds a line saying they were left as written, such as "Quoted text: 3 quotations left as written and not scored". Always keep that line, so the user can see the quotes weren't touched. If it says some quotations changed, restore them from the original before you deliver.
+
 If the rewrite had to drop something that carried meaning or rhythm, add one line saying what was lost, so the user can put it back. Keep the report this short in default mode. In notes or review mode, add the detailed `score` breakdown.
 
 **On AI watermarks.** Some AI providers build statistical watermarks into word choice so readers and regulators can tell text came from an AI. This skill doesn't try to remove them and doesn't claim to. A full rewrite in the writer's own words changes wording anyway, but that's a side effect, and no tool here can check for a watermark. Never describe output as watermark-free, undetectable or proven human.
