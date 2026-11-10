@@ -54,7 +54,7 @@ Date ranges such as "Jul 2020 – Jun 2021" and bullets at the start of a line p
 
 Quoted text stays exactly as written. Text in quotation marks, block quotes and dialogue keeps its wording and punctuation, whoever wrote it, including you. The skill rewrites only the text around a quote and mentions any problem inside one in its notes. The score skips quoted text too, so a quotation full of AI phrasing doesn't count against your rewrite. The script counts a quotation only when it finds an opening mark after a space or the start of a line and a closing mark before a space or punctuation, in the same paragraph. So it still scores apostrophes, as in "don't" and "students'", and inch marks, as in "a 12" tablet". Quotes nested inside other quotes work too, as long as the levels alternate between double and single marks.
 
-The script has two known limits. In both, part of a quotation may count toward the score, but the rewrite still leaves the whole quotation untouched.
+The script has two known limits, and both are rare in real writing. In both, part of a quotation may count toward the score, but the rewrite still leaves the whole quotation untouched.
 
 - Three levels of quotes that reuse straight double quotes, as in "Ama said, 'Kofi said "fine" twice.'"
 - A straight double quote used as an inch mark inside a quotation, as in "the 12" model is robust". The script reads 12" as the end of the quotation.
