@@ -14,8 +14,8 @@ python3 -m unittest discover -s tests -v
 
 | File | What it covers |
 | --- | --- |
-| `test_cleanup.py` | What the cleanup removes (zero-width spaces, text-direction controls, stray tag characters, odd spaces, look-alike letters) and what it keeps (emoji, flags, Persian and Russian text, code, URLs, aligned resume columns) |
-| `test_patterns.py` | One sentence each pattern must catch and one it must leave alone, plus the score's thresholds, the 30-word minimum and the dampening of short texts. A new pattern without an example here fails the suite. |
+| `test_cleanup.py` | What the cleanup removes (zero-width spaces, text-direction controls, stray tag characters, odd spaces, look-alike letters, including inside quotations) and what it keeps (emoji, flags, Persian and Russian text, code, URLs, aligned resume columns) |
+| `test_patterns.py` | One sentence each pattern must catch and one it must leave alone, plus the score's thresholds, the 30-word minimum, the dampening of short texts and the rule that code and quoted text aren't scored. A new pattern without an example here fails the suite. |
 | `test_examples.py` | The resume and prose examples in `fixtures/`, compared with the stored output in `expected/`. It also checks that every rewrite scores lower than its original and keeps no hard-rule pattern, and that plain human writing scores low. |
 
 ## The examples

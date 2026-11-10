@@ -102,6 +102,20 @@ class Score(unittest.TestCase):
             expected = "high" if r["score"] >= 0.6 else "medium" if r["score"] >= 0.35 else "low"
             self.assertEqual(r["tier"], expected)
 
+    def test_quoted_text_is_not_scored(self):
+        for text in ('She wrote, "We leverage robust tools; it\'s not just a tool, it\'s a movement."',
+                     "She wrote, \u201cWe leverage robust tools; truly a testament.\u201d",
+                     "Her note said:\n> Experts agree it plays a vital role; truly pivotal."):
+            with self.subTest(text=text):
+                self.assertEqual(labels_in(text), set())
+
+    def test_text_around_a_quote_is_still_scored(self):
+        self.assertEqual(labels_in('She said "fine." Moreover, we leverage robust tools.'),
+                         {"sentence-initial connector", "AI vocabulary"})
+
+    def test_a_quote_does_not_run_past_a_paragraph(self):
+        self.assertIn("semicolon", labels_in('An open "quote here.\n\nWe left; they stayed.'))
+
     def test_code_is_not_scored(self):
         self.assertEqual(labels_in("Run `x = 1; y = 2` and ```\nfoo \u2014 bar; baz\n``` now."), set())
 

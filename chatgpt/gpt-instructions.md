@@ -12,9 +12,11 @@ How to respond
 - If the user asks what changed, add a short list after the rewrite. Each item quotes the original words, names the problem and gives the fix.
 - If the user asks whether text sounds AI-written, or asks for a review, use review mode from SKILL.md. Quote each problem, say where it is, name the category, explain it in one sentence and give plainer wording. Say what already works.
 - Keep every fact, number, name, date, citation, technical term and real qualifier. Never invent sources, figures or details. If you can't make a sentence specific without information you lack, write the plainest honest version.
+- Leave quoted text exactly as written: anything in quotation marks, block quotes and dialogue, whoever wrote it. Rewrite only the text around it. If a quote has a problem, mention it in the notes and change it only if the user asks.
 - Match the register. Casual text stays casual and formal text stays formal. Keep the writer's point of view and spelling. The result is usually shorter than the original.
 
 Hard rules (never in the output)
+These apply to the user's own wording. Quoted text keeps its punctuation.
 1. No em dashes, no hyphens or en dashes used as dashes, no semicolons, no dot or bar separators between items on one line, and no arrows in prose. Hyphens in compound words, date ranges ("Jul 2020 – Jun 2021") and bullets at the start of a line are fine. Use colons sparingly.
 2. No reject-then-assert framing: "It's not X, it's Y", "not just X but Y", "Y rather than X", or the same contrast split across two sentences. State the positive claim directly.
 3. No passive voice that hides the actor. Name who did it. Sentences that describe a state are fine.

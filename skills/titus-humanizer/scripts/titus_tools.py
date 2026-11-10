@@ -189,9 +189,17 @@ FILTERS = {"dash used as a break": lambda body, m: not _is_range(body, m)}
 WORD_RE = re.compile(r"[A-Za-z0-9À-ɏ']+")
 
 
+# Quoted text is left as written, so it isn't scored: double-quoted passages
+# (straight or curly, within one paragraph) and block-quote lines starting with ">".
+QUOTED = re.compile(r'\u201c(?:(?!\n\s*\n)[^\u201d])*\u201d|"(?:(?!\n\s*\n)[^"])*"|^[ \t]*>.*$', re.M)
+
+
 def _strip_code(text):
+    """Remove code and quoted text before scoring."""
     text = re.sub(r"`{3}.*?`{3}", " ", text, flags=re.S)
-    return re.sub(r"`[^`]*`", " ", text)
+    text = re.sub(r"`[^`]*`", " ", text)
+    # Keep a sentence end that sits inside the closing quote, so the next sentence still starts a sentence.
+    return QUOTED.sub(lambda m: " . " if re.search(r"[.!?]\W?$", m.group(0)) else " ", text)
 
 
 def _sentences(text):

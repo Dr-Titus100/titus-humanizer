@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased
+
+- Quoted text stays exactly as written. Quotations, block quotes, quoted titles and dialogue keep their wording and punctuation, whoever wrote them. The skill rewrites the text around a quote and mentions problems inside one in its notes.
+- The score skips text in double quotation marks and block quotes, as it already skipped code.
+- Tests for quoted text in the score and the cleanup.
+
 ## v1.0.0 (2026-11-07)
 
 First public release.

@@ -13,6 +13,7 @@ This skill makes writing read like a careful, plain-spoken person wrote it. The 
 - **The user asks what changed, or for notes:** after the rewrite, add a short list. Each item quotes the original words, names the problem, and gives the fix.
 - **The user asks "does this sound AI?", "find the slop", or wants a review:** use Review mode (near the end of this file).
 - **Keep the substance.** Every fact, number, name, date, citation, technical term and real qualification survives. Never invent sources, figures or specifics to make vague text concrete. If a sentence can't be made specific without information you don't have, write the plainest honest version. In notes mode you can also say what detail would help.
+- **Leave quoted text as it is.** Words inside quotation marks, block quotes (lines that start with >), epigraphs and quoted titles stay exactly as written, with their own wording, spelling and punctuation, even when they break a rule in this file. This holds whoever wrote them: a source, a colleague, a customer or the writer. It covers quoted messages, emails and feedback, and the dialogue in a story. Rewrite only the text around a quote, and keep each quote where it was, with its attribution. If a quote has a problem (a typo, a line of dialogue that reads like a debate), point it out in notes or review mode and change it only if the user asks. The hidden-character cleanup in Part 0 still runs inside quotes, because those characters aren't part of the quoted words.
 - **Match the register and the person.** A casual text stays casual, a formal letter stays formal. Keep the writer's point of view (first person stays first person) and their spelling variety. The result is usually shorter than the original, never padded.
 
 ## Workflow
@@ -51,7 +52,7 @@ Text copied from AI tools, PDFs, web pages and word processors often carries cha
 
 ## Part 1. Hard rules (never appear in the output)
 
-These patterns count as AI-isms every time they appear, whatever the context. Don't produce them, and remove them from the user's text.
+These patterns count as AI-isms every time they appear, whatever the context. Don't produce them, and remove them from the user's text. Quoted text is the exception. A quotation keeps its own wording and punctuation, semicolons and dashes included (see Default behavior).
 
 **1. Punctuation.** No em dashes (—). No hyphens or en dashes used as dashes to set off an aside or a break ("X - and Y - Z"). No semicolons. No inline dot separators (• · ●) between items on one line. No vertical bars ( | ) as separators. No arrows (→, ->, >, ⇒) in prose, titles or labels.
 - Still fine: hyphens inside compound words ("well-written"), commas, periods, question marks, parentheses.
@@ -169,7 +170,7 @@ AI spells out what a human writer would leave the reader to infer.
 
 - **Narrators who explain the theme outright** (AI 77% vs human 52%). "Grief, she understood now, was only love with nowhere left to go." "And so he learned that true wealth is measured in friendships." End on the event, the image or the decision, and cut the aphorism that explains it. If the realization is itself a plot event, state it plainly as an action ("She decided she could let him go without forgetting him"). In a personal statement or reflective essay that genuinely needs reflection, keep one concrete sentence about what changed ("I now check every dataset for duplicates before I start"), never a life-lesson aphorism.
 - **Moralizing and philosophical weighting.** The text keeps stopping to ponder big questions (what it all means, whether people can change). Cut the pondering unless it is the point of the piece.
-- **Dialogue used as philosophical debate** (59% vs 34%). "'Do you think we're defined by our choices or our regrets?' 'Perhaps they are the same thing.'" Make dialogue do work: argue about something specific, dodge, misunderstand, joke, move the plot. If the debate is the writer's content, keep the ideas and make the lines sound like people talking.
+- **Dialogue used as philosophical debate** (59% vs 34%). "'Do you think we're defined by our choices or our regrets?' 'Perhaps they are the same thing.'" Make dialogue do work: argue about something specific, dodge, misunderstand, joke, move the plot. If the debate is the writer's content, keep the ideas and make the lines sound like people talking. Dialogue is quoted text, so in a default rewrite, suggest these changes in the notes and leave the lines as written, unless the user asks you to rewrite the dialogue.
 - **Everything serves the theme.** Every detail, subplot and image points at one central idea. Let some details just be details. Don't add thematic echoes, and don't rewrite the writer's neutral details to make them symbolic.
 - **Vague allusions instead of named references** (72% vs 50%). "Like a figure from some half-remembered myth." If the writer clearly means a specific work, person or event and names it elsewhere, name it here. Otherwise cut the allusion. Never supply a name the writer didn't give.
 
@@ -229,6 +230,7 @@ The script gives every text a score from 0 to 1 for how strongly it shows the pa
 - **0.35 to 0.59, "medium":** some patterns or uneven spots. Fix what the report lists.
 - **0.00 to 0.34, "low":** few measurable patterns. Still apply the rules in Parts 1 to 6, because the script can't see everything (awkward phrasing, vague claims, illogical wording and most structural tells need judgment).
 - **Under 30 words:** no score, only the pattern list. From 30 to 100 words the script dampens the score, and the report says so.
+- **Code and quoted text aren't scored.** Patterns inside a quotation belong to the person quoted, so the script skips text in double quotation marks and block quotes, as it skips code.
 
 **The score is a gauge, not a verdict.** It counts patterns. It doesn't measure quality or accuracy, and it isn't the output of GPTZero, Turnitin or any other detector, so never present it as one. A low score doesn't prove a person wrote the text. Never invent a score by hand: if no code tool is available, write "Score: not available (no code tool in this chat)" and keep the pattern checks manual.
 
@@ -264,11 +266,12 @@ When the text is slide content:
 - Claims backed by a concrete result, source or constraint: "The March safety inspection found nine blocked exits." "Finance must sign off before the purchase order goes out."
 - Framing that narrows scope or helps navigation: "This note covers the two hiring decisions due Thursday."
 - Parallel structure that separates a real list or logical relationship: "Green means the test passed, and red means it failed."
+- Quoted text: quotations, block quotes, dialogue and quoted titles (see Default behavior).
 - Plain sentences that are already fine. Don't rewrite for the sake of change. Lines like "Quarterly Enrollment by College", "Net margin is profit divided by revenue", "Train staff on the new booking system" (as a bullet in a plan) and "35% of respondents said they now shop online every week" need no edit.
 
 ## Self-check before delivering
 
-1. Search the output for — – ; | → • and for " - " used as a dash. Remove every one that isn't a range (including spaced date ranges such as "Jul 2020 – Jun 2021"), a compound word or a bullet at the start of a line.
+1. Search the output, outside quoted text, for — – ; | → • and for " - " used as a dash. Remove every one that isn't a range (including spaced date ranges such as "Jul 2020 – Jun 2021"), a compound word or a bullet at the start of a line.
 2. Search for "not", "n't", "rather than", "instead of", "just" and "only". Remove any reject-then-assert framing.
 3. Search for a form of "to be" followed by a past participle (was approved, were delayed, is marked, been reviewed). Name the actor unless the sentence describes a state.
 4. Check every title and label. Does any start with a bare command verb? Does any decorate without informing?
@@ -284,7 +287,7 @@ When the text is slide content:
    - a character introduced by an appearance paragraph
    - an ending that sums up inner peace
    - specifics turned generic
-9. Compare it with the original. Every fact, number, name, event and real qualifier is still there. You invented nothing and made no structural change unless the user asked for one.
+9. Compare it with the original. Every fact, number, name, event and real qualifier is still there. You invented nothing and made no structural change unless the user asked for one. Every quotation matches the original word for word.
 10. Run the Part 7 report on the original and the finished text. Confirm that the after score is lower, that no Part 1 pattern is left, that hidden characters are gone, and that emoji, text in other alphabets and code came through unchanged.
 
 ## Review mode

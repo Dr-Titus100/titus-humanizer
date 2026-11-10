@@ -42,6 +42,9 @@ class Removes(unittest.TestCase):
     def test_unusual_spaces_become_normal_spaces(self):
         self.check("10\u00a0kg and 5\u2009mm", "10 kg and 5 mm", "unusual space", 2)
 
+    def test_hidden_character_inside_a_quotation(self):
+        self.check('She said "hid\u200bden."', 'She said "hidden."', "zero-width space")
+
     def test_cyrillic_look_alike_inside_an_english_word(self):
         self.check("the p\u0430per", "the paper", "look-alike letter")
 
