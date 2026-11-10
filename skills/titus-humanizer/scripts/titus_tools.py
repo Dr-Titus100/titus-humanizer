@@ -202,7 +202,7 @@ def _strip_code(text):
     """Remove code and quoted text before scoring."""
     text = re.sub(r"`{3}.*?`{3}", " ", text, flags=re.S)
     text = re.sub(r"`[^`]*`", " ", text)
-    # Keep a sentence end that sits inside the closing quote, so the next sentence still starts a sentence.
+    # When a quote ends a sentence, leave a period in its place so the script still finds the next sentence.
     def blank(m):
         return " . " if re.search(r"[.!?]\W?$", m.group(0)) else " "
     return SINGLE_QUOTED.sub(blank, QUOTED.sub(blank, text))
