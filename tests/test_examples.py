@@ -78,6 +78,20 @@ class KeptItems(unittest.TestCase):
         self.assertEqual(tools._kept_line(self.original, self.original),
                          ["Left as-is: 1 quotation, 1 code snippet, 1 file path, 1 link and 1 emoji"])
 
+    def test_each_kind_kept(self):
+        # One text per kind, rewritten around the item, so each kind is checked on its own.
+        cases = {
+            "quotation": ('We leverage robust tools. She said, "we ship on Fridays." Truly a testament.',
+                          'We use good tools. She said, "we ship on Fridays."'),
+            "code snippet": ("Moreover, simply run `npm run build` to unlock value.", "Run `npm run build`."),
+            "file path": ("The pivotal file at ~/app/config/settings.yaml is crucial.", "The file is ~/app/config/settings.yaml."),
+            "link": ("Dive into the comprehensive guide at https://example.com/guide today!", "The guide is at https://example.com/guide."),
+            "emoji": ("\U0001F389 Big news, team, we truly shattered expectations!", "\U0001F389 We beat the target."),
+        }
+        for kind, (original, rewrite) in cases.items():
+            with self.subTest(kind=kind):
+                self.assertEqual(tools._kept_line(original, rewrite), [f"Left as-is: 1 {kind}"])
+
     def test_each_kind_changed(self):
         changes = {
             "quotation": ('"we leverage robust tools."', '"we use good tools."'),

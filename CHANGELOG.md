@@ -4,7 +4,8 @@
 
 - The report's "Left as-is" line covers quotations, code snippets, file paths, links and emoji, such as "Left as-is: 3 quotations, 1 code snippet and 1 link". It replaces the "Quoted text" line. The script finds each item in the original and the same kind of item in the rewrite and compares them whole, so a link that changed from `/guide` to `/guide2` counts as changed. When anything changed, a "Changed in the rewrite" line says what to restore. Each piece of text is counted once: a link inside code counts as code.
 - Words with a curly apostrophe, such as "don’t", count as one word, the same as "don't". Before, the script split them in two, which threw off the word count, sentence lengths and word variety.
-- Tests for the new line, including one item of each kind changed, items that only gained characters, items inside code or quotes, words with slashes that aren't paths and emoji sequences. A test for curly apostrophes in the word count.
+- A quotation is compared with any code inside it in place, so swapping the code inside a quote counts as a change. A link keeps a closing bracket it opened, as in `.../Function_(mathematics)`. A flag such as 🇺🇸 counts as one emoji, so changing it to 🇸🇺 counts as a change.
+- Tests for the new line: one item of each kind kept, one of each kind changed, items that only gained characters (`/guide` to `/guide2`), code inside a quote, links that end in a bracket, flags, words with slashes that aren't paths and emoji sequences. A test for curly apostrophes in the word count.
 
 ## v1.1.0 (2026-11-10)
 
