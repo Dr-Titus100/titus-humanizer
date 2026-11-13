@@ -2,8 +2,10 @@
 
 ## Branches
 - Push every change to the `dev` branch. Don't create a new branch for each change.
-- When `dev` is ready, open a pull request from `dev` into `main`. Titus merges it and publishes releases.
 - Before you start, bring `dev` up to date with `main`.
+- When the tests pass on `dev` (both `test (3.9)` and `test (3.13)` on that commit), move `main` to the same commit with `git push origin dev:main`. This needs no pull request and no approval from the repository owner.
+- `main` is protected. GitHub blocks force pushes and deletion, and a commit reaches `main` only after its tests pass. If GitHub rejects the push because `main` has moved, merge `main` into `dev`, push `dev`, wait for the tests and push again. Never force-push.
+- The repository owner publishes releases.
 
 ## Writing
 - Everything you write here follows the skill itself: no em dashes, no semicolons, no "not X, but Y" framing and no slogans. Run new text through `python3 skills/titus-humanizer/scripts/titus_tools.py score FILE`.
