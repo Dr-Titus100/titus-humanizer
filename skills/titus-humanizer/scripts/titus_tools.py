@@ -233,7 +233,10 @@ def quotations(text):
 # Items the rewrite must carry over exactly. The report checks each one from the original against the
 # same kind of item found in the rewrite, so a link that gains or loses characters counts as changed.
 KEPT_CODE = re.compile(r"`{3}.*?`{3}|`[^`\n]+`", re.S)
-KEPT_LINK = re.compile(r"\b(?:https?|ftp)://[^\s<>\"'`]+|\bwww\.[^\s<>\"'`]+")
+# A link stops at a space, a quote mark, a backtick or a dash, so in "guide)—robust" the dash and
+# the next word stay in the text.
+_LINK_CHAR = r"[^\s<>\"'`\u2014\u2013\u201c\u201d\u2018\u2019]"
+KEPT_LINK = re.compile(r"\b(?:https?|ftp)://" + _LINK_CHAR + r"+|\bwww\." + _LINK_CHAR + "+")
 # A Unix or home path (~/notes/plan.md, /etc/hosts, ./run.sh) or a Windows path (C:\\data\\run.csv).
 KEPT_PATH = re.compile(r"(?<![\w/:.])(?:~|\.{1,2})?/(?:[\w.\-]+/)*[\w.\-]+|\b[A-Za-z]:\\(?:[\w.\-]+\\)*[\w.\-]+")
 _TRAILING = ".,;:!?)]}"

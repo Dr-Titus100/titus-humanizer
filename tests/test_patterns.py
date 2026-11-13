@@ -196,6 +196,12 @@ class Score(unittest.TestCase):
     def test_text_around_a_link_is_still_scored(self):
         self.assertIn("AI vocabulary", labels_in("We leverage the guide at https://example.com/guide."))
 
+    def test_a_link_ends_at_a_dash(self):
+        labels = labels_in("See [the guide](https://example.com/guide)\u2014robust tools help.")
+        self.assertIn("em dash", labels)
+        self.assertIn("AI vocabulary", labels)
+        self.assertEqual(tools.kept_items("Read https://example.com/guide\u2013then rest.")["link"], ["https://example.com/guide"])
+
     def test_a_link_keeps_its_sentence_break(self):
         self.assertEqual(tools.score("See https://example.com/a. Then go home.")["sentences"], 2)
         self.assertEqual(tools.score("Open ./run.sh. Then go home.")["sentences"], 2)
