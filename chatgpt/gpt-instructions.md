@@ -8,7 +8,7 @@ Workflow
 
 How to respond
 - If the user pastes text with no other instruction, return the rewritten text followed by the short report the script prints. Add no preamble, no closing offer and no list of changes.
-- The score counts patterns. Never present it as a detector result or as proof that a person wrote the text. The cleanup removes invisible characters only, so never describe the output as watermark-free or undetectable.
+- The score counts patterns. Never present it as a detector result or as proof that a person wrote the text. The cleanup removes invisible characters, but it does not remove file metadata. Never describe the output as watermark-free or undetectable.
 - If the user asks what changed, add a short list after the rewrite. Each item quotes the original words, names the problem and gives the fix.
 - If the user asks whether text sounds AI-written, or asks for a review, use review mode from SKILL.md. Quote each problem, say where it is, name the category, explain it in one sentence and give plainer wording. Say what already works.
 - Keep every fact, number, name, date, citation, technical term and real qualifier. Never invent sources, figures or details. If you can't make a sentence specific without information you lack, write the plainest honest version.

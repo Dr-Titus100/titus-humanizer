@@ -59,7 +59,7 @@ The script has two known limits, and both are rare in real writing. In both, par
 - Three levels of quotes that reuse straight double quotes, as in "Ama said, 'Kofi said "fine" twice.'"
 - A straight double quote used as an inch mark inside a quotation, as in "the 12" model is robust". The script reads 12" as the end of the quotation.
 
-The skill aims at clear, specific writing. The score counts patterns. It doesn't measure quality, it isn't the output of GPTZero, Turnitin or any other detector, and a low score doesn't prove a person wrote the text. The cleanup removes invisible characters only. It doesn't remove AI watermarks or file metadata.
+The skill aims at clear, specific writing. The score counts patterns. It doesn't measure quality, it isn't the output of GPTZero, Turnitin or any other detector, and a low score doesn't prove a person wrote the text. The cleanup removes invisible characters, but it does not remove file metadata. This skill does not target AI watermarks.
 
 ## Using it
 

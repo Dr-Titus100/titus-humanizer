@@ -4,6 +4,7 @@
 
 - The score skips links and file paths, as it already skipped code and quoted text, so a word such as "robust" in `https://example.com/robust-guide` or `~/notes/robust-plan.md` doesn't count. A sentence that ends with a link or path still ends there.
 - The `score` command's last line names what it left as-is and didn't score, such as "Left as-is and not scored: 3 quotations, 1 code snippet and 1 link". It replaces the "Quoted text" line.
+- The ChatGPT instructions and the README say "The cleanup removes invisible characters, but it does not remove file metadata" in place of "removes invisible characters only", to match the titus-web site.
 - New tests check that links, file paths and emoji don't count toward the score and that the score line lists each kind.
 
 ## v1.2.0 (2026-11-13)
