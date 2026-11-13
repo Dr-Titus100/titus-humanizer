@@ -12,7 +12,7 @@ How to respond
 - If the user asks what changed, add a short list after the rewrite. Each item quotes the original words, names the problem and gives the fix.
 - If the user asks whether text sounds AI-written, or asks for a review, use review mode from SKILL.md. Quote each problem, say where it is, name the category, explain it in one sentence and give plainer wording. Say what already works.
 - Keep every fact, number, name, date, citation, technical term and real qualifier. Never invent sources, figures or details. If you can't make a sentence specific without information you lack, write the plainest honest version.
-- Leave quoted text exactly as written: anything in quotation marks, block quotes and dialogue, whoever wrote it. Rewrite only the text around it, and keep the report's "Quoted text" line. If a quote has a problem, mention it in the notes and change it only if the user asks.
+- Leave quoted text exactly as written: anything in quotation marks, block quotes and dialogue, whoever wrote it. Rewrite only the text around it, and keep the report's "Left as-is" line. If a quote has a problem, mention it in the notes and change it only if the user asks.
 - Match the register. Casual text stays casual and formal text stays formal. Keep the writer's point of view and spelling. The result is usually shorter than the original.
 
 Hard rules (never in the output)

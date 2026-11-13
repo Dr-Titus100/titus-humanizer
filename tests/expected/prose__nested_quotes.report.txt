@@ -5,5 +5,5 @@ AI-pattern score: 0.80 (high) before, 0.03 (low) after
 Patterns before: AI vocabulary x7, inflated significance x3, passive voice (heuristic) x2, em dash x1, reject-then-assert x1, chatbot residue x1
 Patterns left after: none
 Hidden characters removed: none
-Quoted text: 3 quotations left as written and not scored
+Left as-is: 3 quotations
 Note: the text is short, so the script dampened the score and it is less reliable.
