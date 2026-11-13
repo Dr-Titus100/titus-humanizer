@@ -185,6 +185,24 @@ class Score(unittest.TestCase):
     def test_code_is_not_scored(self):
         self.assertEqual(labels_in("Run `x = 1; y = 2` and ```\nfoo \u2014 bar; baz\n``` now."), set())
 
+    def test_links_and_file_paths_are_not_scored(self):
+        for text in ("Read https://example.com/unlock-robust-synergy today.",
+                     "Read www.example.com/leverage-the-landscape today.",
+                     "Open ~/notes/robust-leverage-plan.md today.",
+                     "Open C:\\data\\robust\\synergy.csv today."):
+            with self.subTest(text=text):
+                self.assertNotIn("AI vocabulary", labels_in(text))
+
+    def test_text_around_a_link_is_still_scored(self):
+        self.assertIn("AI vocabulary", labels_in("We leverage the guide at https://example.com/guide."))
+
+    def test_a_link_keeps_its_sentence_break(self):
+        self.assertEqual(tools.score("See https://example.com/a. Then go home.")["sentences"], 2)
+        self.assertEqual(tools.score("Open ./run.sh. Then go home.")["sentences"], 2)
+
+    def test_emoji_are_not_scored(self):
+        self.assertEqual(tools.score("\U0001F389 We shipped it. \U0001F680")["words"], 3)
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -205,7 +205,7 @@ BLOCK_QUOTE = re.compile(r"^[ \t]*>.*$", re.M)
 
 
 def _strip_code(text):
-    """Remove code and quoted text before scoring."""
+    """Remove code, quoted text, links and file paths before scoring."""
     text = re.sub(r"`{3}.*?`{3}", " ", text, flags=re.S)
     text = re.sub(r"`[^`]*`", " ", text)
     # When a quote ends a sentence, leave a period in its place so the script still finds the next sentence.
@@ -213,7 +213,7 @@ def _strip_code(text):
         return " . " if re.search(r"[.!?]\W*$", m.group(0)) else " "
     for rx in (BLOCK_QUOTE, QUOTED):
         text = rx.sub(blank, text)
-    return text
+    return _blank_links_and_paths(text)
 
 
 def _quotation_spans(text):
@@ -282,6 +282,23 @@ def _emoji_runs(text):
     return runs
 
 
+def _is_path(item):
+    # A path needs at least two parts or a file extension, so "and/or" and "/s" don't count.
+    return item.count("/") + item.count("\\") >= 2 or bool(re.search(r"\.\w+$", item))
+
+
+def _blank_links_and_paths(text):
+    """Blank out links and file paths with spaces of the same length. Punctuation that ends the
+    sentence after one stays, so the script still finds the sentence break."""
+    def link(m):
+        item = _trim_link(m.group(0))
+        return " " * len(item) + m.group(0)[len(item):]
+    def path(m):
+        item = m.group(0).rstrip(_TRAILING)
+        return " " * len(item) + m.group(0)[len(item):] if _is_path(item) else m.group(0)
+    return KEPT_PATH.sub(path, KEPT_LINK.sub(link, text))
+
+
 def kept_items(text):
     """The quotations, code snippets, file paths, links and emoji in a text, by kind. The script
     counts each piece of text once. A link inside code counts as code, and code inside a quotation
@@ -304,8 +321,7 @@ def kept_items(text):
     rest = KEPT_LINK.sub(blank, rest)
     for m in KEPT_PATH.finditer(rest):
         item = m.group(0).rstrip(_TRAILING)
-        # A path needs at least two parts or a file extension, so "and/or" and "/s" don't count.
-        if item.count("/") + item.count("\\") >= 2 or re.search(r"\.\w+$", item):
+        if _is_path(item):
             found["file path"].append(item)
     found["emoji"] = _emoji_runs(rest)
     return found
@@ -327,19 +343,32 @@ def _kept_line(original, rewrite):
                 pool.remove(item)
                 ok += 1
         n = len(items)
-        noun = kind if n == 1 or kind == "emoji" else kind + "s"
         if ok == n:
-            kept.append(f"{n} {noun}")
+            kept.append(_count(n, kind))
         else:
-            changed.append(f"{n - ok} of {n} {noun}")
-    def join(parts):
-        return parts[0] if len(parts) == 1 else ", ".join(parts[:-1]) + " and " + parts[-1]
+            changed.append(f"{n - ok} of {_count(n, kind)}")
     lines = []
     if kept:
-        lines.append(f"Left as-is: {join(kept)}")
+        lines.append(f"Left as-is: {_join(kept)}")
     if changed:
-        lines.append(f"Changed in the rewrite: {join(changed)}. Restore them from the original.")
+        lines.append(f"Changed in the rewrite: {_join(changed)}. Restore them from the original.")
     return lines
+
+
+def _skipped_line(text):
+    """The score report's line naming the quotations, code snippets, file paths, links and emoji
+    that a rewrite keeps as written and the score leaves out."""
+    found = kept_items(text)
+    parts = [_count(len(found[kind]), kind) for kind in KEPT_KINDS if found[kind]]
+    return f"Left as-is and not scored: {_join(parts)}" if parts else None
+
+
+def _count(n, kind):
+    return f"{n} {kind if n == 1 or kind == 'emoji' else kind + 's'}"
+
+
+def _join(parts):
+    return parts[0] if len(parts) == 1 else ", ".join(parts[:-1]) + " and " + parts[-1]
 
 
 def _sentences(text):
@@ -470,9 +499,9 @@ if __name__ == "__main__":
         for label, count, sample in sorted(r["patterns"], key=lambda h: -h[1]):
             print(f"  {label} x{count}, e.g. \"{sample[:60]}\"")
         print(f"Hidden characters found: {describe_found(found)}")
-        n = len(quotations(cleaned))
-        if n:
-            print(f"Quoted text: {n} quotation{'' if n == 1 else 's'} not scored")
+        skipped = _skipped_line(cleaned)
+        if skipped:
+            print(skipped)
     else:
         text, _ = report(_read(sys.argv[2]), _read(sys.argv[3]))
         print(text)
