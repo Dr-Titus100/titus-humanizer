@@ -78,6 +78,13 @@ class KeptItems(unittest.TestCase):
         self.assertEqual(tools._kept_line(self.original, self.original),
                          ["Left as-is: 1 quotation, 1 code snippet, 1 file path, 1 link and 1 emoji"])
 
+    def test_score_line_names_what_it_skips(self):
+        self.assertEqual(tools._skipped_line(self.original),
+                         "Left as-is and not scored: 1 quotation, 1 code snippet, 1 file path, 1 link and 1 emoji")
+        self.assertIsNone(tools._skipped_line("We moved the reading group to Thursdays."))
+        out, _ = run_cli("score", os.path.join(FIXTURES, "prose", "nested_quotes.txt"))
+        self.assertIn("Left as-is and not scored: 3 quotations", out)
+
     def test_each_kind_kept(self):
         # One text per kind, rewritten around the item, so each kind is checked on its own.
         cases = {

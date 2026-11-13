@@ -4,7 +4,7 @@ AI-pattern score: 0.03 (low)
 Words: 73, sentences: 8
 Pattern density: 0.0 per 100 words, sentence-length variation: 0.66, word variety: 0.8
 Hidden characters found: none
-Quoted text: 3 quotations not scored
+Left as-is and not scored: 3 quotations
 
 Hits by line:
   none

@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased
+
+- The score skips links and file paths, as it already skipped code and quoted text, so a word such as "robust" in `https://example.com/robust-guide` or `~/notes/robust-plan.md` doesn't count. A sentence that ends with a link or path still ends there.
+- The `score` command's last line names what it left as-is and didn't score, such as "Left as-is and not scored: 3 quotations, 1 code snippet and 1 link". It replaces the "Quoted text" line.
+- New tests check that links, file paths and emoji don't count toward the score and that the score line lists each kind.
+
 ## v1.2.0 (2026-11-13)
 
 - The report's "Left as-is" line covers quotations, code snippets, file paths, links and emoji, such as "Left as-is: 3 quotations, 1 code snippet and 1 link". It replaces the "Quoted text" line. The script finds each item in the original and the same kind of item in the rewrite and compares them whole, so a link that changed from `/guide` to `/guide2` counts as changed. When anything changed, a "Changed in the rewrite" line says what to restore. The script counts each piece of text once, so a link inside code counts as code.

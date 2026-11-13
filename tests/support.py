@@ -54,14 +54,14 @@ def read(path):
 
 
 def _blank_code(text):
-    """Blank out code and quoted text the same way the scorer skips them, but keep every newline
+    """Blank out code, quoted text, links and file paths the same way the scorer skips them, but keep every newline
     so line numbers stay right."""
     blank = lambda m: re.sub(r"[^\n]", " ", m.group(0))
     text = re.sub(r"`{3}.*?`{3}", blank, text, flags=re.S)
     text = re.sub(r"`[^`]*`", blank, text)
     for rx in (tools.BLOCK_QUOTE, tools.QUOTED):
         text = rx.sub(blank, text)
-    return text
+    return tools._blank_links_and_paths(text)
 
 
 def quotations(text):
