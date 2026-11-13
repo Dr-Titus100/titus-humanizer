@@ -245,7 +245,7 @@ def _is_regional(ch):
 
 
 def _trim_link(link):
-    """Drop punctuation that ends the sentence, not the link. A closing bracket stays when the link
+    """Drop the sentence punctuation that follows a link. A closing bracket stays when the link
     opened one, as in https://en.wikipedia.org/wiki/Function_(mathematics)."""
     while link and link[-1] in _TRAILING:
         close = link[-1]
@@ -283,13 +283,14 @@ def _emoji_runs(text):
 
 
 def kept_items(text):
-    """The quotations, code snippets, file paths, links and emoji in a text, by kind. Each piece of
-    text is counted once: a link inside code counts as code, and code inside a quotation counts as
-    part of the quotation."""
+    """The quotations, code snippets, file paths, links and emoji in a text, by kind. The script
+    counts each piece of text once. A link inside code counts as code, and code inside a quotation
+    counts as part of the quotation."""
     found = {kind: [] for kind in KEPT_KINDS}
     blank = lambda m: " " * len(m.group(0))
-    # Quotations are found with code blanked out, so a backtick or quote mark inside code can't end
-    # one early, but each is compared with its code in place: swapping the code inside a quote changes it.
+    # The script finds quotations with code blanked out, so a backtick or quote mark inside code
+    # can't end one early. It compares each quotation with its code in place, so swapping the code
+    # inside a quote changes it.
     code = [m.span() for m in KEPT_CODE.finditer(text)]
     quotes = _quotation_spans(KEPT_CODE.sub(blank, text))
     found["quotation"] = [text[a:b] for a, b in quotes]
