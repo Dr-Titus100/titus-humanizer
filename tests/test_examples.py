@@ -78,6 +78,20 @@ class KeptItems(unittest.TestCase):
         self.assertEqual(tools._kept_line(self.original, self.original),
                          ["Left as-is: 1 quotation, 1 code snippet, 1 file path, 1 link and 1 emoji"])
 
+    def test_each_kind_kept(self):
+        # One text per kind, rewritten around the item, so each kind is checked on its own.
+        cases = {
+            "quotation": ('We leverage robust tools. She said, "we ship on Fridays." Truly a testament.',
+                          'We use good tools. She said, "we ship on Fridays."'),
+            "code snippet": ("Moreover, simply run `npm run build` to unlock value.", "Run `npm run build`."),
+            "file path": ("The pivotal file at ~/app/config/settings.yaml is crucial.", "The file is ~/app/config/settings.yaml."),
+            "link": ("Dive into the comprehensive guide at https://example.com/guide today!", "The guide is at https://example.com/guide."),
+            "emoji": ("\U0001F389 Big news, team, we truly shattered expectations!", "\U0001F389 We beat the target."),
+        }
+        for kind, (original, rewrite) in cases.items():
+            with self.subTest(kind=kind):
+                self.assertEqual(tools._kept_line(original, rewrite), [f"Left as-is: 1 {kind}"])
+
     def test_each_kind_changed(self):
         changes = {
             "quotation": ('"we leverage robust tools."', '"we use good tools."'),
@@ -103,6 +117,25 @@ class KeptItems(unittest.TestCase):
         self.assertEqual(len(found["quotation"]), 1)
         self.assertEqual(found["link"], [])
         self.assertEqual(found["emoji"], [])
+
+    def test_code_moved_inside_a_quotation_changes_the_quotation(self):
+        original = 'She said "Run `one` then `two`." Then she left.'
+        lines = tools._kept_line(original, original.replace("`one` then `two`", "`two` then `one`"))
+        self.assertIn("Changed in the rewrite: 1 of 1 quotation. Restore them from the original.", lines)
+        self.assertEqual(tools.kept_items(original)["code snippet"], [])
+
+    def test_a_link_keeps_its_own_closing_bracket(self):
+        found = tools.kept_items("See https://en.wikipedia.org/wiki/Function_(mathematics). Or (https://example.com/a).")
+        self.assertEqual(found["link"], ["https://en.wikipedia.org/wiki/Function_(mathematics)", "https://example.com/a"])
+        original = "See https://en.wikipedia.org/wiki/Function_(mathematics) for more."
+        lines = tools._kept_line(original, original.replace("(mathematics)", "(mathematics"))
+        self.assertIn("Changed in the rewrite: 1 of 1 link. Restore them from the original.", lines)
+
+    def test_a_flag_is_one_emoji(self):
+        us, su = "\U0001F1FA\U0001F1F8", "\U0001F1F8\U0001F1FA"
+        self.assertEqual(tools.kept_items(f"Go {us} team")["emoji"], [us])
+        lines = tools._kept_line(f"Go {us} team", f"Go {su} team")
+        self.assertIn("Changed in the rewrite: 1 of 1 emoji. Restore them from the original.", lines)
 
     def test_words_with_slashes_are_not_paths(self):
         self.assertEqual(tools.kept_items("Pick and/or skip it, 1/2 of the time, with w/o help.")["file path"], [])
