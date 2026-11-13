@@ -125,6 +125,12 @@ class Score(unittest.TestCase):
             with self.subTest(text=text):
                 self.assertIn("AI vocabulary", labels_in(text))
 
+    def test_curly_apostrophes_keep_a_word_whole(self):
+        straight = tools.score("We don't know. " * 12)
+        curly = tools.score("We don\u2019t know. " * 12)
+        self.assertEqual(curly["words"], straight["words"])
+        self.assertEqual(curly["words"], 36)
+
     def test_quotes_inside_brackets_dashes_and_other_quotes(self):
         for text in ('("We leverage robust tools.") She left.',
                      'She wrote\u2014"we leverage robust tools"\u2014and left.',

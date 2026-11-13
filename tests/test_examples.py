@@ -48,20 +48,69 @@ class BeforeAndAfter(unittest.TestCase):
                 for quote in quotations(read(os.path.join(FIXTURES, original))):
                     self.assertIn(quote, after)
 
-    def test_report_says_quotations_were_left_as_written(self):
+    def test_report_says_quotations_were_left_as_is(self):
         out, _ = run_cli("report", os.path.join(FIXTURES, "prose", "nested_quotes.txt"),
                          os.path.join(FIXTURES, "prose", "nested_quotes_rewrite.txt"))
-        self.assertIn("Quoted text: 3 quotations left as written and not scored", out)
+        self.assertIn("Left as-is: 3 quotations", out)
+        self.assertNotIn("Changed in the rewrite", out)
 
-    def test_report_flags_a_changed_quotation(self):
-        line = tools._quote_line('She said "we leverage robust tools." Then she left.',
-                                 'She said "we use good tools." Then she left.')
-        self.assertEqual(line, "Quoted text: 0 of 1 quotation left as written. Restore the changed ones from the original.")
-
-    def test_report_has_no_quote_line_without_quotations(self):
+    def test_report_has_no_left_as_is_line_when_there_is_nothing_to_keep(self):
         out, _ = run_cli("report", os.path.join(FIXTURES, "prose", "email.txt"),
                          os.path.join(FIXTURES, "prose", "email_rewrite.txt"))
-        self.assertNotIn("Quoted text", out)
+        self.assertNotIn("Left as-is", out)
+        self.assertNotIn("Changed in the rewrite", out)
+
+
+class KeptItems(unittest.TestCase):
+    """The report's "Left as-is" and "Changed in the rewrite" lines."""
+    original = ('She said, "we leverage robust tools." Run `npm run build` and open ~/app/config/settings.yaml. '
+                "The guide is at https://example.com/guide. \U0001F389")
+
+    def test_finds_each_kind_once(self):
+        found = tools.kept_items(self.original)
+        self.assertEqual(found["quotation"], ['"we leverage robust tools."'])
+        self.assertEqual(found["code snippet"], ["`npm run build`"])
+        self.assertEqual(found["file path"], ["~/app/config/settings.yaml"])
+        self.assertEqual(found["link"], ["https://example.com/guide"])
+        self.assertEqual(found["emoji"], ["\U0001F389"])
+
+    def test_everything_kept(self):
+        self.assertEqual(tools._kept_line(self.original, self.original),
+                         ["Left as-is: 1 quotation, 1 code snippet, 1 file path, 1 link and 1 emoji"])
+
+    def test_each_kind_changed(self):
+        changes = {
+            "quotation": ('"we leverage robust tools."', '"we use good tools."'),
+            "code snippet": ("`npm run build`", "`npm run make`"),
+            "file path": ("~/app/config/settings.yaml", "~/app/settings.yaml"),
+            "link": ("https://example.com/guide", "https://example.com/start"),
+            "emoji": ("\U0001F389", ""),
+        }
+        for kind, (old, new) in changes.items():
+            with self.subTest(kind=kind):
+                lines = tools._kept_line(self.original, self.original.replace(old, new))
+                self.assertIn(f"Changed in the rewrite: 1 of 1 {kind}. Restore them from the original.", lines)
+
+    def test_an_item_that_only_grew_counts_as_changed(self):
+        # A substring check would miss these: the old link and path still appear inside the new ones.
+        rewrite = self.original.replace("guide", "guide2").replace("settings.yaml", "settings.yaml.bak")
+        lines = tools._kept_line(self.original, rewrite)
+        self.assertIn("Changed in the rewrite: 1 of 1 file path and 1 of 1 link. Restore them from the original.", lines)
+
+    def test_items_inside_code_or_quotes_count_once(self):
+        found = tools.kept_items('Run `curl https://example.com/x` then say "see https://example.com/y \U0001F600".')
+        self.assertEqual(found["code snippet"], ["`curl https://example.com/x`"])
+        self.assertEqual(len(found["quotation"]), 1)
+        self.assertEqual(found["link"], [])
+        self.assertEqual(found["emoji"], [])
+
+    def test_words_with_slashes_are_not_paths(self):
+        self.assertEqual(tools.kept_items("Pick and/or skip it, 1/2 of the time, with w/o help.")["file path"], [])
+
+    def test_emoji_sequences_stay_whole(self):
+        family = "\U0001F468\u200d\U0001F469\u200d\U0001F467"
+        self.assertEqual(tools.kept_items(f"Hi {family} and \u2764\ufe0f")["emoji"], [family, "\u2764\ufe0f"])
+
 
     def test_nested_quotes_example_keeps_all_three_quotations(self):
         self.assertEqual(len(quotations(read(os.path.join(FIXTURES, "prose", "nested_quotes_rewrite.txt")))), 3)

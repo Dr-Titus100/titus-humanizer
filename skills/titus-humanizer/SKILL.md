@@ -247,7 +247,7 @@ The script gives every text a score from 0 to 1 for how strongly it shows the pa
 > Patterns left after: none
 > Hidden characters removed: 1 zero-width space
 
-When the text has quotations, the report adds a line saying they were left as written, such as "Quoted text: 3 quotations left as written and not scored". Always keep that line, so the user can see the quotes weren't touched. If it says some quotations changed, restore them from the original before you deliver.
+When the text has quotations, code, file paths, links or emoji, the report adds a line saying they came through unchanged, such as "Left as-is: 3 quotations, 1 code snippet and 1 link". Always keep that line, so the user can see those parts weren't touched. If the report has a "Changed in the rewrite" line, restore the items it names from the original and run the report again before you deliver.
 
 If the rewrite had to drop something that carried meaning or rhythm, add one line saying what was lost, so the user can put it back. Keep the report this short in default mode. In notes or review mode, add the detailed `score` breakdown.
 
@@ -290,7 +290,7 @@ When the text is slide content:
    - an ending that sums up inner peace
    - specifics turned generic
 9. Compare it with the original. Every fact, number, name, event and real qualifier is still there. You invented nothing and made no structural change unless the user asked for one. Every quotation matches the original word for word.
-10. Run the Part 7 report on the original and the finished text. Confirm that the after score is lower, that no Part 1 pattern is left, that hidden characters are gone, and that emoji, text in other alphabets and code came through unchanged.
+10. Run the Part 7 report on the original and the finished text. Confirm that the after score is lower, that no Part 1 pattern is left, that hidden characters are gone, and that text in other alphabets came through unchanged. The report's "Left as-is" line covers quotations, code, file paths, links and emoji. If it also has a "Changed in the rewrite" line, fix those items first.
 
 ## Review mode
 

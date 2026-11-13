@@ -186,7 +186,8 @@ def _is_range(body, m):
 # Matches that a filter rejects are not counted (for example, date ranges on a resume).
 FILTERS = {"dash used as a break": lambda body, m: not _is_range(body, m)}
 
-WORD_RE = re.compile(r"[A-Za-z0-9À-ɏ']+")
+# Words keep their apostrophes, straight or curly, so "don't" and "don’t" each count as one word.
+WORD_RE = re.compile(r"[A-Za-z0-9À-ɏ'\u2019]+")
 
 
 # Quoted text is left as written, so it isn't scored. A quotation needs an opening and a closing
@@ -224,17 +225,88 @@ def quotations(text):
     return [q for _, q in sorted(found)]
 
 
-def _quote_line(original, rewrite):
-    """One report line saying the quotations were left as written, or which ones changed."""
-    quotes = quotations(original)
-    if not quotes:
-        return None
-    kept = sum(q in rewrite for q in quotes)
-    n = len(quotes)
-    noun = "quotation" if n == 1 else "quotations"
-    if kept == n:
-        return f"Quoted text: {n} {noun} left as written and not scored"
-    return f"Quoted text: {kept} of {n} {noun} left as written. Restore the changed ones from the original."
+# Items the rewrite must carry over exactly. The report checks each one from the original against the
+# same kind of item found in the rewrite, so a link that gains or loses characters counts as changed.
+KEPT_CODE = re.compile(r"`{3}.*?`{3}|`[^`\n]+`", re.S)
+KEPT_LINK = re.compile(r"\b(?:https?|ftp)://[^\s<>\"'`]+|\bwww\.[^\s<>\"'`]+")
+# A Unix or home path (~/notes/plan.md, /etc/hosts, ./run.sh) or a Windows path (C:\\data\\run.csv).
+KEPT_PATH = re.compile(r"(?<![\w/:.])(?:~|\.{1,2})?/(?:[\w.\-]+/)*[\w.\-]+|\b[A-Za-z]:\\(?:[\w.\-]+\\)*[\w.\-]+")
+_TRAILING = ".,;:!?)]}"
+KEPT_KINDS = ("quotation", "code snippet", "file path", "link", "emoji")
+
+
+def _emoji_runs(text):
+    """Each emoji, with its joiners, variation selectors and skin tones, as one item."""
+    runs, i, chars = [], 0, list(text)
+    while i < len(chars):
+        if not _is_emoji(chars[i]):
+            i += 1
+            continue
+        j = i + 1
+        while j < len(chars):
+            cp = ord(chars[j])
+            if cp in (0x200D, 0xFE0F) or 0x1F3FB <= cp <= 0x1F3FF or (0xE0020 <= cp <= 0xE007F):
+                j += 1
+            elif ord(chars[j - 1]) == 0x200D and _is_emoji(chars[j]):
+                j += 1
+            else:
+                break
+        runs.append("".join(chars[i:j]))
+        i = j
+    return runs
+
+
+def kept_items(text):
+    """The quotations, code snippets, file paths, links and emoji in a text, by kind. Each piece of
+    text is counted once: a link inside code counts as code, and code inside a quotation as a quotation."""
+    found = {kind: [] for kind in KEPT_KINDS}
+    blank = lambda m: " " * len(m.group(0))
+    for m in KEPT_CODE.finditer(text):
+        found["code snippet"].append(m.group(0))
+    rest = KEPT_CODE.sub(blank, text)
+    found["quotation"] = quotations(rest)
+    rest = QUOTED.sub(blank, BLOCK_QUOTE.sub(blank, rest))
+    for m in KEPT_LINK.finditer(rest):
+        found["link"].append(m.group(0).rstrip(_TRAILING))
+    rest = KEPT_LINK.sub(blank, rest)
+    for m in KEPT_PATH.finditer(rest):
+        item = m.group(0).rstrip(_TRAILING)
+        # A path needs at least two parts or a file extension, so "and/or" and "/s" don't count.
+        if item.count("/") + item.count("\\") >= 2 or re.search(r"\.\w+$", item):
+            found["file path"].append(item)
+    found["emoji"] = _emoji_runs(rest)
+    return found
+
+
+def _kept_line(original, rewrite):
+    """Report lines saying which quotations, code snippets, file paths, links and emoji came through
+    unchanged, and which changed."""
+    before, after = kept_items(original), kept_items(rewrite)
+    kept, changed = [], []
+    for kind in KEPT_KINDS:
+        items = before[kind]
+        if not items:
+            continue
+        pool = list(after[kind])
+        ok = 0
+        for item in items:
+            if item in pool:
+                pool.remove(item)
+                ok += 1
+        n = len(items)
+        noun = kind if n == 1 or kind == "emoji" else kind + "s"
+        if ok == n:
+            kept.append(f"{n} {noun}")
+        else:
+            changed.append(f"{n - ok} of {n} {noun}")
+    def join(parts):
+        return parts[0] if len(parts) == 1 else ", ".join(parts[:-1]) + " and " + parts[-1]
+    lines = []
+    if kept:
+        lines.append(f"Left as-is: {join(kept)}")
+    if changed:
+        lines.append(f"Changed in the rewrite: {join(changed)}. Restore them from the original.")
+    return lines
 
 
 def _sentences(text):
@@ -335,9 +407,7 @@ def report(original, rewrite):
         f"Patterns left after: {_pattern_line(after)}",
         f"Hidden characters removed: {describe_found(found_orig)}",
     ]
-    quote_line = _quote_line(clean_orig, clean_new)
-    if quote_line:
-        lines.append(quote_line)
+    lines += _kept_line(clean_orig, clean_new)
     if found_new:
         lines.append(f"Hidden characters removed from the rewrite: {describe_found(found_new)}")
     if before.get("dampened") or after.get("dampened"):
