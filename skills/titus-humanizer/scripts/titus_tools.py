@@ -216,13 +216,18 @@ def _strip_code(text):
     return text
 
 
+def _quotation_spans(text):
+    """(start, end) of every quotation and block-quote line, in reading order."""
+    spans = [m.span() for m in BLOCK_QUOTE.finditer(text)]
+    blanked = BLOCK_QUOTE.sub(lambda m: " " * len(m.group(0)), text)
+    spans += [m.span() for m in QUOTED.finditer(blanked)]
+    return sorted(spans)
+
+
 def quotations(text):
     """Every quotation and block-quote line the script skips, in reading order. A quote nested
     inside another one comes back as part of the outer quote."""
-    found = [(m.start(), m.group(0)) for m in BLOCK_QUOTE.finditer(text)]
-    blanked = BLOCK_QUOTE.sub(lambda m: " " * len(m.group(0)), text)
-    found += [(m.start(), m.group(0)) for m in QUOTED.finditer(blanked)]
-    return [q for _, q in sorted(found)]
+    return [text[a:b] for a, b in _quotation_spans(text)]
 
 
 # Items the rewrite must carry over exactly. The report checks each one from the original against the
@@ -235,12 +240,33 @@ _TRAILING = ".,;:!?)]}"
 KEPT_KINDS = ("quotation", "code snippet", "file path", "link", "emoji")
 
 
+def _is_regional(ch):
+    return 0x1F1E6 <= ord(ch) <= 0x1F1FF
+
+
+def _trim_link(link):
+    """Drop punctuation that ends the sentence, not the link. A closing bracket stays when the link
+    opened one, as in https://en.wikipedia.org/wiki/Function_(mathematics)."""
+    while link and link[-1] in _TRAILING:
+        close = link[-1]
+        opener = {")": "(", "]": "[", "}": "{"}.get(close)
+        if opener and link.count(opener) >= link.count(close):
+            break
+        link = link[:-1]
+    return link
+
+
 def _emoji_runs(text):
     """Each emoji, with its joiners, variation selectors and skin tones, as one item."""
     runs, i, chars = [], 0, list(text)
     while i < len(chars):
         if not _is_emoji(chars[i]):
             i += 1
+            continue
+        # A flag is two regional-indicator letters, such as U+1F1FA U+1F1F8 for the US flag.
+        if _is_regional(chars[i]) and i + 1 < len(chars) and _is_regional(chars[i + 1]):
+            runs.append(chars[i] + chars[i + 1])
+            i += 2
             continue
         j = i + 1
         while j < len(chars):
@@ -258,16 +284,22 @@ def _emoji_runs(text):
 
 def kept_items(text):
     """The quotations, code snippets, file paths, links and emoji in a text, by kind. Each piece of
-    text is counted once: a link inside code counts as code, and code inside a quotation as a quotation."""
+    text is counted once: a link inside code counts as code, and code inside a quotation counts as
+    part of the quotation."""
     found = {kind: [] for kind in KEPT_KINDS}
     blank = lambda m: " " * len(m.group(0))
-    for m in KEPT_CODE.finditer(text):
-        found["code snippet"].append(m.group(0))
-    rest = KEPT_CODE.sub(blank, text)
-    found["quotation"] = quotations(rest)
-    rest = QUOTED.sub(blank, BLOCK_QUOTE.sub(blank, rest))
+    # Quotations are found with code blanked out, so a backtick or quote mark inside code can't end
+    # one early, but each is compared with its code in place: swapping the code inside a quote changes it.
+    code = [m.span() for m in KEPT_CODE.finditer(text)]
+    quotes = _quotation_spans(KEPT_CODE.sub(blank, text))
+    found["quotation"] = [text[a:b] for a, b in quotes]
+    found["code snippet"] = [text[a:b] for a, b in code if not any(qa <= a and b <= qb for qa, qb in quotes)]
+    rest = list(text)
+    for a, b in code + quotes:
+        rest[a:b] = " " * (b - a)
+    rest = "".join(rest)
     for m in KEPT_LINK.finditer(rest):
-        found["link"].append(m.group(0).rstrip(_TRAILING))
+        found["link"].append(_trim_link(m.group(0)))
     rest = KEPT_LINK.sub(blank, rest)
     for m in KEPT_PATH.finditer(rest):
         item = m.group(0).rstrip(_TRAILING)
